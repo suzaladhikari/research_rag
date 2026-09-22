@@ -10,3 +10,10 @@ st.set_page_config(
 
 st.title("SentinelRAG")
 st.caption("Corporate Security made more secure")
+
+### Filling up the form 
+
+with st.form("Login Form"):
+    email = st.text_input("Work email")
+    password = st.text_input("Password", type = 'password')
+    submitted = st.form_submit_button("Sign in", use_container_width=True)
