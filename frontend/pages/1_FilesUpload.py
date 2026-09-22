@@ -7,4 +7,4 @@ import requests
 uploaded_file = st.file_uploader("Please upload the files in here", type = ["pdf", "txt", "json"], accept_multiple_files=True)
 
 if uploaded_file and st.button("Submit"):
-    st.write("Successfully submitted")
+    st.success("Successfully submitted")
