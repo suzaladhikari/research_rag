@@ -1,5 +1,5 @@
-from pydantic import BaseModel
-from fastapi import APIRouter
+import json 
+from fastapi import HTTPException, UploadFile
+from pypdf import PdfReader
 
-router = APIRouter()
-    
+### Criterias
