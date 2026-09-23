@@ -9,5 +9,6 @@ ALLOWED_EXTENSIONS = {".pdf", ".txt", ".json"}
 
 async def validate_file(file:UploadFile)->bytes:
     extension = Path(file.filename or "").suffix.lower() ## Getting the type of file in the lower format to check if the file matches the criteria 
-
+    if extension not in ALLOWED_EXTENSIONS:
+        raise HTTPException(400, 'Only TXT, PDF, and JSON files are allowed')
     
