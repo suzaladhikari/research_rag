@@ -13,9 +13,14 @@ async def validate_file(file:UploadFile)->bytes:
         raise HTTPException(400, 'Only TXT, PDF, and JSON files are allowed')
     
     ## Checking if the content has some data, filesize aand many more
-    content = await file.read(MAX_FILE_SIZE+1)
+    content = await file.read(MAX_FILE_SIZE+1) ## Reading the file 
     if not content:
         raise HTTPException(400, "File is empty!") ## If the file is found to be empty 
-    if len(content) > MAX_FILE_SIZE:
+    if len(content) >= MAX_FILE_SIZE:
         raise HTTPException(413, "File exceeds the 10 MB limit")
-    
+
+    try: 
+        if extension == '.pdf':
+            if not content.startswith(b"%PDF-"): ## Usually the first line of the pdf file starts with %PDF so if not the starting with %PDF then we wont accept it 
+                raise ValueError("Missing PDF header")
+            
