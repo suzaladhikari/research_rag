@@ -1,8 +1,6 @@
 from fastapi import FastAPI 
-import requests
+from app.routes.events import router as events_router 
 
-app = FastAPI(title='SentinelRAG')
-@app.get("/")
-def health_check():
-    return {"status": "ok"}
+app = FastAPI(title = 'SentinelRAG')
+app.include_router(events_router)
 
