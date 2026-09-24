@@ -1,6 +1,5 @@
 from fastapi import FastAPI 
-from app.routes.events import router as events_router 
+from app.routes.post import router as posting_router 
 
 app = FastAPI(title = 'SentinelRAG')
-app.include_router(events_router)
-
+app.include_router(posting_router)
