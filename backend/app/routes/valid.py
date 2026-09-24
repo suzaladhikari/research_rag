@@ -42,5 +42,11 @@ async def validate_file(file:UploadFile)->bytes:
                 raise ValueError("Text file has no content")
     except (ValueError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise HTTPException(400, f"Invalid {extension} file: {exc}") from exc 
-    
+
+    except Exception as exc:
+        if extension == ".pdf":
+            raise HTTPException(400, "PDF could not be read") from exc
+        raise
+
+    return content 
 
