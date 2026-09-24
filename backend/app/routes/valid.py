@@ -2,6 +2,7 @@ import json
 from fastapi import HTTPException, UploadFile
 from pypdf import PdfReader
 from pathlib import Path
+from io import BytesIO
 
 ### Criterias
 MAX_FILE_SIZE = 10 * 1024 * 1024 ## 10 MB 
@@ -23,4 +24,10 @@ async def validate_file(file:UploadFile)->bytes:
         if extension == '.pdf':
             if not content.startswith(b"%PDF-"): ## Usually the first line of the pdf file starts with %PDF so if not the starting with %PDF then we wont accept it 
                 raise ValueError("Missing PDF header")
-            
+            reader = PdfReader(BytesIO)
+            if reader.is_encrypted:
+                raise ValueError("This pdf is passeword-protected PDF")
+
+            if len(reader.pages) == 0:
+                raise.ValueError("PDF has no pages")
+
