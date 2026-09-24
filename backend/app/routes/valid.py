@@ -40,6 +40,7 @@ async def validate_file(file:UploadFile)->bytes:
         else:
             if not decoded.strip():
                 raise ValueError("Text file has no content")
-            
-
+    except (ValueError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise HTTPException(400, f"Invalid {extension} file: {exc}") from exc 
+    
 
