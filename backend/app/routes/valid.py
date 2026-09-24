@@ -32,6 +32,14 @@ async def validate_file(file:UploadFile)->bytes:
                 raise ValueError("PDF has no pages")
             if not any((page.extract_text() or "").strip() for page in reader.pages): ## If any pdf from the pages has no extractable text then return that there is no such thing
                 raise ValueError("Pdf has no extractable text")
-                
+        decoded = content.decode('utf-8-sig')
+        if extension == '.json':
+            data = json.loads(decoded)
+            if data == {} or data == []:
+                raise ValueError("The file is empty")
+        else:
+            if not decoded.strip():
+                raise ValueError("Text file has no content")
+            
 
 
