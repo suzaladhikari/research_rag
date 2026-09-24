@@ -29,5 +29,9 @@ async def validate_file(file:UploadFile)->bytes:
                 raise ValueError("This pdf is passeword-protected PDF")
 
             if len(reader.pages) == 0:
-                raise.ValueError("PDF has no pages")
+                raise ValueError("PDF has no pages")
+            if not any((page.extract_text() or "").strip() for page in reader.pages): ## If any pdf from the pages has no extractable text then return that there is no such thing
+                raise ValueError("Pdf has no extractable text")
+                
+
 
