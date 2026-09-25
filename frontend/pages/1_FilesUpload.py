@@ -14,9 +14,9 @@ print(API_LINK)
 if uploaded_files and st.button("Submit"):
     for uploaded_file in uploaded_files:
         response = requests.post(f'{API_LINK}/posting_router', files={"file": (uploaded_file.name, uploaded_file.getvalue())},)
-    if response.status_code == 200:
-        st.success("It has been posted")
-    else: 
-        st.warning(response.status_code)
+        if response.status_code == 200:
+            st.success("It has been posted")
+        else: 
+            st.warning(response.status_code)
 
     
