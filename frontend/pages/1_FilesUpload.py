@@ -12,4 +12,10 @@ load_dotenv()
 API_LINK = os.getenv("API_URL")
 print(API_LINK)
 if uploaded_file and st.button("Submit"):
-    st.success("Successfully submitted")
+    response = requests.post(f'{API_LINK}/post')
+    if response.status_code == 200:
+        st.success("It has been posted")
+    else: 
+        st.warning(response.status_code)
+
+    
