@@ -24,7 +24,7 @@ async def validate_file(file:UploadFile)->bytes:
         if extension == '.pdf':
             if not content.startswith(b"%PDF-"): ## Usually the first line of the pdf file starts with %PDF so if not the starting with %PDF then we wont accept it 
                 raise ValueError("Missing PDF header")
-            reader = PdfReader(BytesIO)
+            reader = PdfReader(BytesIO(content))
             if reader.is_encrypted:
                 raise ValueError("This pdf is passeword-protected PDF")
 
