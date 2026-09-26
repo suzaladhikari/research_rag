@@ -10,14 +10,14 @@ ALLOWED_EXTENSIONS = {".pdf", ".txt", ".json"}
 
 async def validate_file(file:UploadFile)->bytes:
     extension = Path(file.filename or "").suffix.lower() ## Getting the type of file in the lower format to check if the file matches the criteria 
-    if extension not in ALLOWED_EXTENSIONS:
+    if extension not in ALLOWED_EXTENSIONS: ## Immediately rejecting the file that are not in the allowed extensions
         raise HTTPException(400, 'Only TXT, PDF, and JSON files are allowed')
     
     ## Checking if the content has some data, filesize aand many more
     content = await file.read(MAX_FILE_SIZE+1) ## Reading the file 
-    if not content:
+    if not content: ## If there is nothing in the content
         raise HTTPException(400, "File is empty!") ## If the file is found to be empty 
-    if len(content) >= MAX_FILE_SIZE:
+    if len(content) >= MAX_FILE_SIZE: ## If the size of file is not good
         raise HTTPException(413, "File exceeds the 10 MB limit")
 
     try: 
