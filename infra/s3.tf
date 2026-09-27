@@ -4,5 +4,17 @@ resource "random_id" "bucket_suffix" {
 
 resource "aws_s3_bucket" "uploads" {
     bucket = "security-rag-uploads-${random_id.bucket_suffix.hex}"
-} ## Aws s3 bucket is the resource type that comes from the AWS provider, and the nickname to this bucket is uploads
-### here we have used to create the bucket name using the random hexadecimal created from random_id resurouce 
+}
+# Aws s3 bucket is the resource type that comes from the AWS provider, and the nickname to this bucket is uploads
+# here we have used to create the bucket name using the random hexadecimal created from random_id resurouce 
+
+## Adding encryption to the bucket 
+resource "aws_s3_bucket_server_side_encryption_configuration" "updates_encryption {
+    bucket = aws_s3_bucket.uploads.id
+    rule {
+        apply_server_side_encryption_by_default {
+            sse_algorithm = "AES256"
+        }
+    }
+}
+# Accessing the bucket just created
