@@ -17,7 +17,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "updates_encryptio
         }
     }
 }
-# Accessing the bucket just created
+# Block all the public access
 
 resource "aws_s3_bucket_public_access_block" "uploads_block" {
     bucket = aws_s3_bucket.uploads.id
