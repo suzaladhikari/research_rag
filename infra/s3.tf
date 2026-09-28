@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "uploads" {
 # here we have used to create the bucket name using the random hexadecimal created from random_id resurouce 
 
 ## Adding encryption to the bucket 
-resource "aws_s3_bucket_server_side_encryption_configuration" "updates_encryption {
+resource "aws_s3_bucket_server_side_encryption_configuration" "updates_encryption" {
     bucket = aws_s3_bucket.uploads.id
     rule {
         apply_server_side_encryption_by_default {
@@ -18,3 +18,16 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "updates_encryptio
     }
 }
 # Accessing the bucket just created
+
+resource "aws_s3_bucket_public_access_block" "uploads_block" {
+    bucket = aws_s3_bucket.uploads.id
+    block_public_policy =  true
+    block_public_acls =  true
+    ignore_public_acls = true
+    restrict_public_buckets = true
+  
+}
+
+output "bucket_name" {
+  value = aws_s3_bucket.uploads.id
+}
