@@ -18,6 +18,5 @@ if uploaded_files and st.button("Submit"):
             st.success("It has been posted")
         else: 
             st.warning(response.status_code)
-            st.write(response.json())
 
     
