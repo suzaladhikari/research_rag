@@ -1,9 +1,10 @@
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile, File, HTTPException
 from backend.app.routes.valid import validate_file
 import boto3
 import uuid
 import os 
 from dotenv import load_dotenv
+from botocore.exceptions import ClientError
 
 load_dotenv()
 router = APIRouter()
@@ -22,6 +23,11 @@ async def posting_router(file:UploadFile):
             Body = content, 
             ContentType = file.content_type
         )
+    except ClientError as c:
+        raise HTTPException(status_code=500, detail = f"S3 upload failed: {c}")
+
+    return {f"The file has been saved to {file_name}"}
+
     
     
 
