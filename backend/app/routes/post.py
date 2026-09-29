@@ -16,12 +16,13 @@ async def posting_router(file:UploadFile):
     ## Stripping away the path just to get the file name 
     file_name = os.path.basename(file.filename)
     key = f'uploads/{uuid.uuid4()}/{file_name}'
+    content_type = file.content_type
     try: 
         s3.put_object(
             Bucket = BUCKET_NAME, 
             Key = key, 
             Body = content, 
-            ContentType = file.content_type
+            ContentType = content_type
         )
     except ClientError as c:
         raise HTTPException(status_code=500, detail = f"S3 upload failed: {c}")

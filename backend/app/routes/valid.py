@@ -7,12 +7,16 @@ from io import BytesIO
 ### Criterias
 MAX_FILE_SIZE = 10 * 1024 * 1024 ## 10 MB 
 ALLOWED_EXTENSIONS = {".pdf", ".txt", ".json"}
-
+CONTENT_TYPE = {
+    ".pdf": "application/pdf",
+    ".txt": "text/plain",
+    ".md": "text/markdown",
+}
 async def validate_file(file:UploadFile)->bytes:
     extension = Path(file.filename or "").suffix.lower() ## Getting the type of file in the lower format to check if the file matches the criteria 
     if extension not in ALLOWED_EXTENSIONS: ## Immediately rejecting the file that are not in the allowed extensions
         raise HTTPException(400, 'Only TXT, PDF, and JSON files are allowed')
-    
+    content_type = CONTENT_TYPE.get(extension, 'application/octet-stream')
     ## Checking if the content has some data, filesize aand many more
     content = await file.read(MAX_FILE_SIZE+1) ## Reading the file 
     if not content: ## If there is nothing in the content
