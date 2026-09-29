@@ -53,5 +53,5 @@ async def validate_file(file:UploadFile)->bytes:
             raise HTTPException(400, "PDF could not be read") from exc
         raise
 
-    return content 
+    return content, content_type
 
