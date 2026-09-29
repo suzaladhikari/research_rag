@@ -10,12 +10,12 @@ MAX_FILE_SIZE = 10 * 1024 * 1024 ## 10 MB
 CONTENT_TYPE = {
     ".pdf": "application/pdf",
     ".txt": "text/plain",
-    ".md": "text/markdown",
+    ".json": "application/json",
+    ".md": "text/markdown"
 }
 ALLOWED_EXTENSIONS = set(CONTENT_TYPE)
 async def validate_file(file:UploadFile)->bytes:
     extension = Path(file.filename or "").suffix.lower() ## Getting the type of file in the lower format to check if the file matches the criteria 
-    content_type = CONTENT_TYPE.get(extension, 'application/octet-stream')
     if extension not in ALLOWED_EXTENSIONS: ## Immediately rejecting the file that are not in the allowed extensions
         raise HTTPException(400, 'Only TXT, PDF, and JSON files are allowed')
 
@@ -55,5 +55,5 @@ async def validate_file(file:UploadFile)->bytes:
             raise HTTPException(400, "PDF could not be read") from exc
         raise
 
-    return content, content_type
+    return content, CONTENT_TYPE[extension]
 
