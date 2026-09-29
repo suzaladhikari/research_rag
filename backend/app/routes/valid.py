@@ -14,7 +14,7 @@ CONTENT_TYPE = {
     ".md": "text/markdown"
 }
 ALLOWED_EXTENSIONS = set(CONTENT_TYPE)
-async def validate_file(file:UploadFile)->bytes:
+async def validate_file(file:UploadFile)->tuple[bytes,str]:
     extension = Path(file.filename or "").suffix.lower() ## Getting the type of file in the lower format to check if the file matches the criteria 
     if extension not in ALLOWED_EXTENSIONS: ## Immediately rejecting the file that are not in the allowed extensions
         raise HTTPException(400, 'Only TXT, PDF, and JSON files are allowed')
