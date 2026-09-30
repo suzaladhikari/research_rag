@@ -16,7 +16,9 @@ resource "aws_sqs_queue" "retrieve" {
     })
 }
 output "sqs_queue_url" {
-  value = aws_sqs_queue.retrieve.url
+  value = aws_sqs_queue.retrieve.url ## Returns the url for sqs
 }
 
-
+output "sqs_dlq_url" {
+  value = aws_sqs_queue.dlq.url ## Returns the url for dlq
+}
