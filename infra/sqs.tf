@@ -15,3 +15,8 @@ resource "aws_sqs_queue" "retrieve" {
         maxReceiveCount = 3 
     })
 }
+output "sqs_queue_url" {
+  value = aws_sqs_queue.retrieve.url
+}
+
+
