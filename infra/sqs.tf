@@ -20,6 +20,7 @@ resource "aws_sqs_queue" "retrieve" {
 resource "aws_sqs_queue_policy" "allow_s3_communication" {
   queue_url = aws_sqs_queue.retrieve.id
   policy = jsondecode({
+    Version = "2012-10-17" ## Adding version in orderto stop the AWS timeout 
     
   })
 
