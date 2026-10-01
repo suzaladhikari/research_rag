@@ -19,7 +19,7 @@ resource "aws_sqs_queue" "retrieve" {
 ### Giving the s3 authority to communicate with sqs
 resource "aws_sqs_queue_policy" "allow_s3_communication" {
   queue_url = aws_sqs_queue.retrieve.id
-  policy = jsondecode({
+  policy = jsonencode({
     Version = "2012-10-17" ## Adding version in orderto stop the AWS timeout 
     Statment = [{
       Effect = "Allow" ## Granting permission for the operatoin described below
@@ -43,8 +43,7 @@ resource "aws_s3_bucket_notification" "uploading_notify" {
     events = ["s3:ObjectCreated:*"] ## Sending notification whenever an object is created 
     filter_prefix = "uploads/" ##Only notify for objects whose keys start with uploads/ 
   }
-  depends_on = [aws_sqs_queue_policy.allow_s3_communication] ## It depends on the rule based on the allow_s3_communication
-
+  depends_on = [aws_sqs_queue_policy.allow_s3_communication] ## If there is no such policy it will throw an error how ever if there is policy then it will be implemented  
 }
 
 output "sqs_queue_url" {
