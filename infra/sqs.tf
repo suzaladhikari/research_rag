@@ -21,7 +21,7 @@ resource "aws_sqs_queue_policy" "allow_s3_communication" {
   queue_url = aws_sqs_queue.retrieve.id
   policy = jsonencode({
     Version = "2012-10-17" ## Adding version in orderto stop the AWS timeout 
-    Statment = [{
+    Statement = [{
       Effect = "Allow" ## Granting permission for the operatoin described below
       Principal = {Service = "s3.amazonaws.com"} ## Who can perform it 
       Action = "sqs:SendMessage" ## What can s3 do ?!
