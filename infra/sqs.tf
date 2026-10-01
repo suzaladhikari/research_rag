@@ -15,6 +15,16 @@ resource "aws_sqs_queue" "retrieve" {
         maxReceiveCount = 3 
     })
 }
+
+### Giving the s3 authority to communicate with sqs
+resource "aws_sqs_queue_policy" "allow_s3_communication" {
+  queue_url = aws_sqs_queue.retrieve.id
+  policy = jsondecode({
+    
+  })
+
+}
+
 output "sqs_queue_url" {
   value = aws_sqs_queue.retrieve.url ## Returns the url for sqs
 }
@@ -22,3 +32,5 @@ output "sqs_queue_url" {
 output "sqs_dlq_url" {
   value = aws_sqs_queue.dlq.url ## Returns the url for dlq
 }
+
+
