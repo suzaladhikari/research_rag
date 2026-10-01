@@ -34,6 +34,12 @@ resource "aws_sqs_queue_policy" "allow_s3_communication" {
 
 }
 
+## Adding the notificatoin that the object has been created everysingle time an object is created. 
+
+resource "aws_s3_bucket_notification" "uploading_notify" {
+  bucket = aws_s3_bucket.uploads.id
+}
+
 output "sqs_queue_url" {
   value = aws_sqs_queue.retrieve.url ## Returns the url for sqs
 }
