@@ -43,6 +43,7 @@ resource "aws_s3_bucket_notification" "uploading_notify" {
     events = ["s3:ObjectCreated:*"] ## Sending notification whenever an object is created 
     filter_prefix = "uploads/" ##Only notify for objects whose keys start with uploads/ 
   }
+  depends_on = [aws_sqs_queue_policy.allow_s3_communication] ## It depends on the rule based on the allow_s3_communication
 
 }
 
