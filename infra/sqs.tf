@@ -24,7 +24,11 @@ resource "aws_sqs_queue_policy" "allow_s3_communication" {
     Statment = [{
       Effect = "Allow" ## Granting permission for the operatoin described below
       Principal = {Service = "s3.amazonaws.com"} ## Who can perform it 
-      
+      Action = "sqs:SendMessage" ## What can s3 do ?!
+      Resource = aws_sqs_queue.retrieve.arn ### Where can it send message 
+      Condition = {
+        ArnEquals = {"aws:SourceArn" = aws_s3_bucket.uploads.arn}
+      }
     }] ## List of permissions
   })
 
