@@ -34,14 +34,21 @@ resource "aws_sqs_queue_policy" "allow_s3_communication" {
 
 }
 
-## Adding the notificatoin that the object has been created everysingle time an object is created. 
+##Telling the bucket to push an event to the queue whenever an object is created under uploads/
 
 resource "aws_s3_bucket_notification" "uploading_notify" {
   bucket = aws_s3_bucket.uploads.id
+  queue {
+    queue_arn = aws_sqs_queue.retrieve.arn ## Sending the notifications to the retrieve SQS queue 
+    events = ["s3:ObjectCreated:*"] ## Sending notification whenever an object is created 
+    filter_prefix = "uploads/" ##Only notify for objects whose keys start with uploads/ 
+  }
+
 }
 
 output "sqs_queue_url" {
-  value = aws_sqs_queue.retrieve.url ## Returns the url for sqs
+  value = aws_sqs_queue.retrieve.url
+  
 }
 
 output "sqs_dlq_url" {
