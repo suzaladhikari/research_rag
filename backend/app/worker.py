@@ -26,3 +26,7 @@ while True:
         for record in body["Records"]:
             bucket_name = record['s3']['bucket']['name']## Extracting the name of the bucket
             uploaded_file = record['s3']['object']['key'] ## Name of the file
+            key = urllib.parse.unquote_plus(uploaded_file) ## This will give the format of  filename the way it is stored in the s3
+            print(f"New Upload: {bucket_name}/{key}")
+
+    sqs.delete_message(QueueUrl=SQS_URL, ReceiptHandle=msg["ReceiptHandle"])
