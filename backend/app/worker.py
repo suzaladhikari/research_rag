@@ -7,7 +7,10 @@ import os
 load_dotenv()
 SQS_URL = os.getenv("SQS_URL")
 sqs = boto3.client("sqs", region_name="us-east-1")
+s3 = boto3.client("s3", region_name="us-east-1")
 
+def process_file(bucket_name:str, key:str) -> None:
+    pass 
 while True: 
     respones = sqs.receive_message(
         QueueUrl = SQS_URL,  ## Extracting the message from the given queue
