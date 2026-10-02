@@ -12,7 +12,7 @@ while True:
     respones = sqs.receive_message(
         QueueUrl = SQS_URL,  ## Extracting the message from the given queue
         MaxNumberOfMessages = 5,  ## Maximum number of message to pollout at once
-        WaitTimeSeconds = 20 ## Total Wait time 
+        WaitTimeSeconds = 2 ## Total Wait time 
     )
     for msg in respones.get("Messages", []):
         body = json.loads(msg["Body"])
@@ -29,4 +29,4 @@ while True:
             key = urllib.parse.unquote_plus(uploaded_file) ## This will give the format of  filename the way it is stored in the s3
             print(f"New Upload: {bucket_name}/{key}")
 
-    sqs.delete_message(QueueUrl=SQS_URL, ReceiptHandle=msg["ReceiptHandle"])
+        sqs.delete_message(QueueUrl=SQS_URL, ReceiptHandle=msg["ReceiptHandle"])
