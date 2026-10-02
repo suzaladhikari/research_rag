@@ -3,6 +3,7 @@ import json
 import urllib.parse
 from dotenv import load_dotenv
 import os 
+import tempfile
 
 load_dotenv()
 SQS_URL = os.getenv("SQS_URL")
@@ -10,7 +11,9 @@ sqs = boto3.client("sqs", region_name="us-east-1")
 s3 = boto3.client("s3", region_name="us-east-1")
 
 def process_file(bucket_name:str, key:str) -> None:
-    pass 
+    ## Creating a temp directory just to store the file, the directory will be deleted once the whole with command gets deleted
+    with  tempfile.TemporaryDirectory() as tmp_dir:
+        
 while True: 
     respones = sqs.receive_message(
         QueueUrl = SQS_URL,  ## Extracting the message from the given queue
@@ -29,7 +32,7 @@ while True:
         for record in body["Records"]:
             bucket_name = record['s3']['bucket']['name']## Extracting the name of the bucket
             uploaded_file = record['s3']['object']['key'] ## Name of the file
-            key = urllib.parse.unquote_plus(uploaded_file) ## This will give the format of  filename the way it is stored in the s3
-            print(f"New Upload: {bucket_name}/{key}")
+            key = urllib.parse.unquote_plus(uploaded_file) ## This will give the format of  filename the way it is stored in the s3 
+            process_file(bucket_name, key)
 
         sqs.delete_message(QueueUrl=SQS_URL, ReceiptHandle=msg["ReceiptHandle"])
