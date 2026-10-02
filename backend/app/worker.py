@@ -14,3 +14,6 @@ while True:
         MaxNumberOfMessages = 5,  ## Maximum number of message to pollout at once
         WaitTimeSeconds = 20 ## Total Wait time 
     )
+    for msg in respones.get("Messages", []):
+        body = json.loads(msg["Body"])
+    ### Skipping the one time test message that s3 sends 
