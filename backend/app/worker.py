@@ -20,3 +20,9 @@ while True:
         if body.get("Event") == 's3:TestEvent':
             sqs.delete_message(QueueUrl = SQS_URL, ReceiptHandle = msg["ReceiptHandle"] )
             continue
+
+        ### Looping through the sqs messages
+
+        for record in body["Records"]:
+            bucket_name = record['s3']['bucket']['name']## Extracting the name of the bucket
+            uploaded_file = record['s3']['object']['key'] ## Name of the file
