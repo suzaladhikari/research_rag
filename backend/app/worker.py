@@ -17,3 +17,6 @@ while True:
     for msg in respones.get("Messages", []):
         body = json.loads(msg["Body"])
     ### Skipping the one time test message that s3 sends 
+        if body.get("Event") == 's3:TestEvent':
+            sqs.delete_message(QueueUrl = SQS_URL, ReceiptHandle = msg["ReceiptHandle"] )
+            continue
