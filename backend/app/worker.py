@@ -11,6 +11,23 @@ SQS_URL = os.getenv("SQS_URL")
 sqs = boto3.client("sqs", region_name="us-east-1")
 s3 = boto3.client("s3", region_name="us-east-1")
 
+
+### Extracting the text from the pdf 
+def extract_text(path: str) -> str:
+    reader = PdfReader(path)
+    pages = [page.extract_text() or "" for page in reader.pages] ## Extracted the text of each page
+    return "\n".join(pages).strip()
+
+### Editing the chunks 
+def chunk_text(text, chunk_size: int = 1000, overlap: int = 100):
+    chunks = []
+    start = 0 
+    if not text:
+        print(f"no text found in {key}")
+    while start < len(chunks):
+        chunks.append(text[start:start+chunk_size])
+        start += chunk_size - overlap
+    return chunks
 def process_file(bucket_name:str, key:str) -> None:
     ## Creating a temp directory just to store the file, the directory will be deleted once the whole with command gets deleted
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -19,11 +36,6 @@ def process_file(bucket_name:str, key:str) -> None:
         size = os.path.getsize(local_path)
         print(f"Download s3://{bucket_name}/{key}, (size = {size})")
         text = extract_text(local_path)
-
-def extract_text(path: str) -> str:
-    reader = PdfReader(path)
-    pages = [page.extract_text() or "" for page in reader.pages] ## Extracted the text of each page
-    return "\n".join(pages).strip()
 
 while True: 
     respones = sqs.receive_message(
