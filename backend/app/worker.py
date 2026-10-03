@@ -23,7 +23,7 @@ def process_file(bucket_name:str, key:str) -> None:
 def extract_text(path: str) -> str:
     reader = PdfReader(path)
     pages = [page.extract_text() or "" for page in reader.pages] ## Extracted the text of each page
-    
+    return "\n".join(pages).strip()
 
 while True: 
     respones = sqs.receive_message(
