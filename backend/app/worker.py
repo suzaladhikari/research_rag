@@ -13,10 +13,11 @@ s3 = boto3.client("s3", region_name="us-east-1")
 def process_file(bucket_name:str, key:str) -> None:
     ## Creating a temp directory just to store the file, the directory will be deleted once the whole with command gets deleted
     with tempfile.TemporaryDirectory() as tmp_dir:
-        local_path = os.path.join(tempfile, os.path.basename(key))
+        local_path = os.path.join(tmp_dir, os.path.basename(key))
         s3.download_file(bucket_name, key, local_path)
         size = os.path.getsize(local_path)
         print(f"Download s3://{bucket_name}/{key}, (size = {size})")
+        text = extract_text(local_path)
 
 while True: 
     respones = sqs.receive_message(
