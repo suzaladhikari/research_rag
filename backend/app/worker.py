@@ -4,6 +4,7 @@ import urllib.parse
 from dotenv import load_dotenv
 import os 
 import tempfile
+from pypdf import PdfReader
 
 load_dotenv()
 SQS_URL = os.getenv("SQS_URL")
@@ -18,6 +19,11 @@ def process_file(bucket_name:str, key:str) -> None:
         size = os.path.getsize(local_path)
         print(f"Download s3://{bucket_name}/{key}, (size = {size})")
         text = extract_text(local_path)
+
+def extract_text(path: str) -> str:
+    reader = PdfReader(path)
+    pages = [page.extract_text() or "" for page in reader.pages] ## Extracted the text of each page
+    
 
 while True: 
     respones = sqs.receive_message(
