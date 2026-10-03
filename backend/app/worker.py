@@ -22,7 +22,7 @@ def extract_text(path: str) -> str:
 def chunk_text(text, chunk_size: int = 1000, overlap: int = 100) -> list[str]:
     chunks = []
     start = 0 
-    while start < len(chunks):
+    while start < len(text):
         chunks.append(text[start:start+chunk_size])
         start += chunk_size - overlap
     return chunks
@@ -44,7 +44,7 @@ while True:
     respones = sqs.receive_message(
         QueueUrl = SQS_URL,  ## Extracting the message from the given queue
         MaxNumberOfMessages = 5,  ## Maximum number of message to pollout at once
-        WaitTimeSeconds = 2 ## Total Wait time 
+        WaitTimeSeconds = 20 ## Total Wait time 
     )
     for msg in respones.get("Messages", []):
         body = json.loads(msg["Body"])
