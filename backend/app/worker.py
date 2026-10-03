@@ -19,15 +19,14 @@ def extract_text(path: str) -> str:
     return "\n".join(pages).strip()
 
 ### Editing the chunks 
-def chunk_text(text, chunk_size: int = 1000, overlap: int = 100):
+def chunk_text(text, chunk_size: int = 1000, overlap: int = 100) -> list[str]:
     chunks = []
     start = 0 
-    if not text:
-        print(f"no text found in {key}")
     while start < len(chunks):
         chunks.append(text[start:start+chunk_size])
         start += chunk_size - overlap
     return chunks
+
 def process_file(bucket_name:str, key:str) -> None:
     ## Creating a temp directory just to store the file, the directory will be deleted once the whole with command gets deleted
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -36,6 +35,10 @@ def process_file(bucket_name:str, key:str) -> None:
         size = os.path.getsize(local_path)
         print(f"Download s3://{bucket_name}/{key}, (size = {size})")
         text = extract_text(local_path)
+        if not text:
+            print(f"no text found in {key}")
+        chunks = chunk_text(text)
+        print(f"For the text with size {len(text)} total of {len(chunks)} chunks have been created")
 
 while True: 
     respones = sqs.receive_message(
