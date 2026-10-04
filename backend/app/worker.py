@@ -53,7 +53,7 @@ def process_file(bucket_name:str, key:str) -> None:
         chunks = chunk_text(text)
         vectors = vectorize_chunks(chunks)
         print(f"For the text with size {len(text)} total of {len(chunks)} chunks have been created")
-
+        print(f"For the text with size {len(text)} total of {len(vectors)} vectors have been created")
 while True: 
     respones = sqs.receive_message(
         QueueUrl = SQS_URL,  ## Extracting the message from the given queue
