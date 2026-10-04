@@ -26,6 +26,9 @@ def chunk_text(text, chunk_size: int = 1000, overlap: int = 100) -> list[str]:
         chunks.append(text[start:start+chunk_size])
         start += chunk_size - overlap
     return chunks
+## Creating the embedding vectors for the chunks 
+def vectorize_chunks(chunks: list[str]) ->list[list[float]]:
+    pass 
 
 def process_file(bucket_name:str, key:str) -> None:
     ## Creating a temp directory just to store the file, the directory will be deleted once the whole with command gets deleted
@@ -38,6 +41,7 @@ def process_file(bucket_name:str, key:str) -> None:
         if not text:
             print(f"no text found in {key}")
         chunks = chunk_text(text)
+        vectors = vectorize_chunks(chunks)
         print(f"For the text with size {len(text)} total of {len(chunks)} chunks have been created")
 
 while True: 
