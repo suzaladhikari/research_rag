@@ -6,6 +6,10 @@ import os
 import tempfile
 from pypdf import PdfReader
 from sentence_transformers import SentenceTransformer
+
+
+### Tranformer model 
+sentence_model = SentenceTransformer('all-MiniLM-L6-v2')
 load_dotenv()
 SQS_URL = os.getenv("SQS_URL")
 sqs = boto3.client("sqs", region_name="us-east-1")
