@@ -32,7 +32,13 @@ def chunk_text(text, chunk_size: int = 1000, overlap: int = 100) -> list[str]:
     return chunks
 ## Creating the embedding vectors for the chunks 
 def vectorize_chunks(chunks: list[str]) ->list[list[float]]:
-    pass 
+    vectors = sentence_model.encode(
+        chunks, 
+        batch_size=64, 
+        normalize_embeddings=True,
+        show_progress_bar=False
+    ) 
+    return vectors.tolist()
 
 def process_file(bucket_name:str, key:str) -> None:
     ## Creating a temp directory just to store the file, the directory will be deleted once the whole with command gets deleted
