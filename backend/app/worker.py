@@ -4,11 +4,15 @@ import urllib.parse
 from dotenv import load_dotenv
 import os 
 import psycopg2
-
+from pgvector.psycopg2 import register_vector
 import tempfile
 from pypdf import PdfReader
 from sentence_transformers import SentenceTransformer
 
+
+### Creating connection with the database 
+database = psycopg2.connect(os.getenv("DATABASE_URL")) ## Connecting with the database
+connection = register_vector(database) ##The connection now accepts the column with the vecor format as well
 
 ### Tranformer model 
 sentence_model = SentenceTransformer('all-MiniLM-L6-v2')
