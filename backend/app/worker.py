@@ -52,8 +52,8 @@ def process_file(bucket_name:str, key:str) -> None:
             print(f"no text found in {key}")
         chunks = chunk_text(text)
         vectors = vectorize_chunks(chunks)
-        print(f"For the text with size {len(text)} total of {len(chunks)} chunks have been created")
-        print(f"For the text with size {len(text)} total of {len(vectors)} vectors have been created")
+        print(f"For the text with size {len(text)} total of {len(chunks[0])} chunks have been created")
+        print(f"For the text with size {len(text)} total of {len(vectors[0])} vectors have been created")
 while True: 
     respones = sqs.receive_message(
         QueueUrl = SQS_URL,  ## Extracting the message from the given queue
