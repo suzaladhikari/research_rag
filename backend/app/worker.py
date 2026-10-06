@@ -25,7 +25,7 @@ s3 = boto3.client("s3", region_name="us-east-1")
 def register_into_database(chunks,vectors, file_id):
     ## Creating rows
     rows = [
-        (f"{file_id}_{i}", file_id, i, chunks, vectors) for i, (text,emb) in enumerate(zip(chunks, vectors))
+        (f"{file_id}_{i}", file_id, i, text, emb) for i, (text,emb) in enumerate(zip(chunks, vectors))
     ]
 
 ### Extracting the text from the pdf 
