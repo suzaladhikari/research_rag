@@ -21,6 +21,9 @@ SQS_URL = os.getenv("SQS_URL")
 sqs = boto3.client("sqs", region_name="us-east-1")
 s3 = boto3.client("s3", region_name="us-east-1")
 
+## Registering into the database 
+def register_into_database(chunks,vectors, file_id):
+    
 
 ### Extracting the text from the pdf 
 def extract_text(path: str) -> str:
@@ -59,6 +62,7 @@ def process_file(bucket_name:str, key:str) -> None:
             print(f"no text found in {key}")
         chunks = chunk_text(text)
         vectors = vectorize_chunks(chunks)
+        register_into_database(chunks,vectors, file_id)
 
         print(f"For the text with size {len(text)} total of {len(chunks[0])} chunks have been created")
         print(f"For the text with size {len(text)} total of {len(vectors[0])} vectors have been created")
