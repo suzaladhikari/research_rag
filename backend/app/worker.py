@@ -7,16 +7,17 @@ import psycopg2
 from pgvector.psycopg2 import register_vector
 import tempfile
 from pypdf import PdfReader
+import numpy as np
 from sentence_transformers import SentenceTransformer
 
-
+load_dotenv()
 ### Creating connection with the database 
 database = psycopg2.connect(os.getenv("DATABASE_URL")) ## Connecting with the database
 connection = register_vector(database) ##The connection now accepts the column with the vecor format as well
 
 ### Tranformer model 
 sentence_model = SentenceTransformer('all-MiniLM-L6-v2')
-load_dotenv()
+
 SQS_URL = os.getenv("SQS_URL")
 sqs = boto3.client("sqs", region_name="us-east-1")
 s3 = boto3.client("s3", region_name="us-east-1")
@@ -25,9 +26,9 @@ s3 = boto3.client("s3", region_name="us-east-1")
 def register_into_database(chunks,vectors, file_id):
     ## Creating rows
     rows = [
-        (f"{file_id}_{i}", file_id, i, text, emb) for i, (text,emb) in enumerate(zip(chunks, vectors))
+        (f"{file_id}_{i}", file_id, i, text, np.array(emb)) for i, (text,emb) in enumerate(zip(chunks, vectors))
     ]
-    with connection.cursor() as cur:
+    with connection.cursor() as cur: ## Used to add the record in the database
         cur.executemany(
             """
             INSERT INTO chunks (id, file_id, chunk_index, chunks, embedding)
@@ -35,7 +36,7 @@ def register_into_database(chunks,vectors, file_id):
             """, 
             rows
         )
-    connection.commit()
+    connection.commit() ## Commited the connection or stored in thedatabse 
 
 ### Extracting the text from the pdf 
 def extract_text(path: str) -> str:
