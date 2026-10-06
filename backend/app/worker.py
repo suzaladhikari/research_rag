@@ -3,6 +3,8 @@ import json
 import urllib.parse
 from dotenv import load_dotenv
 import os 
+import psycopg2
+
 import tempfile
 from pypdf import PdfReader
 from sentence_transformers import SentenceTransformer
@@ -46,12 +48,14 @@ def process_file(bucket_name:str, key:str) -> None:
         local_path = os.path.join(tmp_dir, os.path.basename(key))
         s3.download_file(bucket_name, key, local_path)
         size = os.path.getsize(local_path)
+        file_id = key.split("/")[1]
         print(f"Download s3://{bucket_name}/{key}, (size = {size})")
         text = extract_text(local_path)
         if not text:
             print(f"no text found in {key}")
         chunks = chunk_text(text)
         vectors = vectorize_chunks(chunks)
+
         print(f"For the text with size {len(text)} total of {len(chunks[0])} chunks have been created")
         print(f"For the text with size {len(text)} total of {len(vectors[0])} vectors have been created")
 while True: 
