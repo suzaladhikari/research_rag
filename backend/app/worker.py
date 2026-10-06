@@ -12,8 +12,8 @@ from sentence_transformers import SentenceTransformer
 
 load_dotenv()
 ### Creating connection with the database 
-database = psycopg2.connect(os.getenv("DATABASE_URL")) ## Connecting with the database
-connection = register_vector(database) ##The connection now accepts the column with the vecor format as well
+connection = psycopg2.connect(os.getenv("DATABASE_URL")) ## Connecting with the database
+register_vector(connection) ##The connection now accepts the column with the vecor format as well
 
 ### Tranformer model 
 sentence_model = SentenceTransformer('all-MiniLM-L6-v2')
