@@ -27,6 +27,15 @@ def register_into_database(chunks,vectors, file_id):
     rows = [
         (f"{file_id}_{i}", file_id, i, text, emb) for i, (text,emb) in enumerate(zip(chunks, vectors))
     ]
+    with connection.cursor() as cur:
+        cur.executemany(
+            """
+            INSERT INTO chunks (id, file_id, chunk_index, chunks, embedding)
+            VALUES (%s, %s, %s, %s, %s)
+            """, 
+            rows
+        )
+    connection.commit()
 
 ### Extracting the text from the pdf 
 def extract_text(path: str) -> str:
