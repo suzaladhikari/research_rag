@@ -23,7 +23,7 @@ def extract_text(path: str) -> str:
     return "\n".join(pages).strip()
 
 ### Editing the chunks 
-def chunk_text(text, chunk_size: int = 1000, overlap: int = 100) -> list[str]:
+def chunk_text(text, chunk_size: int = 1000, overlap: int = 100) -> list[str]: ## Each chunk will be the size of 1000
     chunks = []
     start = 0 
     while start < len(text):
@@ -31,7 +31,7 @@ def chunk_text(text, chunk_size: int = 1000, overlap: int = 100) -> list[str]:
         start += chunk_size - overlap
     return chunks
 ## Creating the embedding vectors for the chunks 
-def vectorize_chunks(chunks: list[str]) ->list[list[float]]:
+def vectorize_chunks(chunks: list[str]) ->list[list[float]]: ## Each vector will be the size of 384 
     vectors = sentence_model.encode(
         chunks, 
         batch_size=64, 
