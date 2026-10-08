@@ -1,7 +1,4 @@
 import streamlit as st
-from pydantic import BaseModel, Field
-import random 
-
 import requests 
 import os 
 from dotenv import load_dotenv
@@ -30,7 +27,7 @@ if st.button("Send"):
     else:
         response = requests.post(f"{API_LINK}/posting_question_vector", json = {"question": question})
         st.session_state.messages.append({"role": "user", "message": question})
-        st.session_state.messages.append({"role": "SentinelRAG", "message": response})
+        st.session_state.messages.append({"role": "assistant", "message": response})
         st.rerun() ## To keep on rerunning
 
 if st.button("Clear chat"):

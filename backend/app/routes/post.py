@@ -1,10 +1,11 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from backend.app.routes.valid import validate_file
-from backend.app.worker import vectorize_chunks, chunk_text
+from backend.app.worker import vectorize_chunks
 import boto3
 import uuid
 import os 
 from dotenv import load_dotenv
+from sentence_transformers import SentenceTransformer
 import numpy as np
 from botocore.exceptions import ClientError
 load_dotenv()
@@ -28,12 +29,12 @@ async def posting_router(file:UploadFile):
         raise HTTPException(status_code=500, detail = f"S3 upload failed: {c}")
 
     return {f"The file has been saved to {file_name}"}
+### Creating the sentence transformer model 
 
 
 @router.post('/posting_question_vector', status_code=202)
 def posting_question_vector(question: str):
-    chunks = chunk_text(question)
-    vectors = vectorize_chunks(chunks)
+    vectors = vectorize_chunks(question) ## Question is embedded as one piece
     return vectors
     
 
