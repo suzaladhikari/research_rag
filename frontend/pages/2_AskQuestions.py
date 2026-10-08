@@ -30,8 +30,7 @@ if st.button("Send"):
     else:
         response = requests.post(f"{API_LINK}/posting_question_vector", json = {"question": question})
         st.session_state.messages.append({"role": "user", "message": question})
-        answer = random.random()
-        st.session_state.messages.append({"role": "SentinelRAG", "message": answer})
+        st.session_state.messages.append({"role": "SentinelRAG", "message": response})
         st.rerun() ## To keep on rerunning
 
 if st.button("Clear chat"):
