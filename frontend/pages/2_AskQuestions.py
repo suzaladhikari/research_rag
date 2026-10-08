@@ -24,6 +24,8 @@ if st.button("Send"):
         st.session_state.messages.append({"role": "SentinelRAG", "message": answer})
         st.rerun() ## To keep on rerunning
 
+if st.button("Clear chat"):
+    st.session_state.messages = []
 ## Dispalying the text: 
 for message in st.session_state.messages:
     with st.chat_message(message['role']):
