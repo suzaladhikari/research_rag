@@ -32,17 +32,11 @@ async def posting_router(file:UploadFile):
 ### Creating the sentence transformer model 
 
 sentence_model = SentenceTransformer('all-MiniLM-L6-v2')
-def vectorize_chunks(chunks: list[str]) ->list[list[float]]: ## Each vector will be the size of 384 
-    vectors = sentence_model.encode(
-        chunks, 
-        batch_size=64, 
-        normalize_embeddings=True,
-        show_progress_bar=False
-    ) 
-    return vectors.tolist()
+def vectorize_question(text: str) ->list[list[float]]: ## Each vector will be the size of 384 
+    return sentence_model.encode(text).toist()
 @router.post('/posting_question_vector', status_code=202)
 def posting_question_vector(question: str):
-    vectors = vectorize_chunks(question) ## Question is embedded as one piece
+    vectors = vectorize_question(question) ## Question is embedded as one piece
     return vectors
     
 
