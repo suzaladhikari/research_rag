@@ -1,6 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from backend.app.routes.valid import validate_file
-from backend.app.worker import vectorize_chunks
+from backend.app.worker import vectorize_chunks, chunk_text
 import boto3
 import uuid
 import os 
@@ -30,8 +30,9 @@ async def posting_router(file:UploadFile):
     return {f"The file has been saved to {file_name}"}
 
 @router.post('/posting_question_vector', status_code=202)
-def posting_question_vector(vector: list[float]):
-    vectors = vectorize_chunks(vector)
+def posting_question_vector(question: str):
+    chunks = chunk_text(question)
+    vectors = vectorize_chunks(chunks)
     return vectors
     
 
