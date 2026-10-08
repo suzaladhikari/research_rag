@@ -36,6 +36,9 @@ for message in st.session_state.messages:
 class AskQuestion(BaseModel):
     question: str = Field(lt = min_words, gt = max_words)
 
+chunks = chunk_text(question)
+vectors = vectorize_chunks(chunks)
+
     ### Converting question into the chunks 
 
 

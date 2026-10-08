@@ -1,9 +1,11 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from backend.app.routes.valid import validate_file
+from backend.app.worker import vectorize_chunks
 import boto3
 import uuid
 import os 
 from dotenv import load_dotenv
+import numpy as np
 from botocore.exceptions import ClientError
 load_dotenv()
 router = APIRouter()
@@ -27,6 +29,10 @@ async def posting_router(file:UploadFile):
 
     return {f"The file has been saved to {file_name}"}
 
+@router.post('/posting_question_vector', status_code=202)
+def posting_question_vector(vector: list[float]):
     
+
+
     
 

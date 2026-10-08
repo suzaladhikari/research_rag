@@ -1,4 +1,4 @@
-CREATE EXTENSION IF NOT EXISTS vector; -- Creating the vector extension if it doesnot EXISTS
+CREATE EXTENSION IF NOT EXISTS vector; -- Creating the vector extension to store the vector embeddings 
 
 -- Creating the table to add the information of the chunks 
 CREATE table chunks (
@@ -6,7 +6,7 @@ CREATE table chunks (
     file_id TEXT NOT NULL,  -- common file id belongs to the same id
     chunk_index INT NOT NULL, --ordering chunks basedon the file_id
     chunks TEXT NOT NULL,  -- Raw generated chunks
-    embedding vector(384) NOT NULL, --Embedded chunks to vectors
+    embedding vector(384) NOT NULL, --Embedded chunks to vectors created through the vector extension
     UNIQUE (file_id, chunk_index) -- file id and chunkindex needs to be unique
 );
 
