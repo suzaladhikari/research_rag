@@ -1,6 +1,8 @@
 import streamlit as st
 from pydantic import BaseModel, Field
 import random 
+from sentence_transformers import SentenceTransformer 
+from backend.app.worker import chunk_text, vectorize_chunks
 st.header("Ask Questions and Get Information about your documents")
 ## Creating the user interface 
 min_words = 5
@@ -32,5 +34,8 @@ for message in st.session_state.messages:
         st.write(message['message'])
 
 class AskQuestion(BaseModel):
-    question: str = Field()
+    question: str = Field(lt = min_words, gt = max_words)
+
+    ### Converting question into the chunks 
+
 
