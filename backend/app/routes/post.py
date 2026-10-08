@@ -29,6 +29,7 @@ async def posting_router(file:UploadFile):
 
     return {f"The file has been saved to {file_name}"}
 
+
 @router.post('/posting_question_vector', status_code=202)
 def posting_question_vector(question: str):
     chunks = chunk_text(question)

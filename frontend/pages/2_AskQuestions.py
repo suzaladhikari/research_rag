@@ -1,7 +1,6 @@
 import streamlit as st
 from pydantic import BaseModel, Field
 import random 
-from sentence_transformers import SentenceTransformer 
 
 import requests 
 import os 
@@ -29,8 +28,8 @@ if st.button("Send"):
     if not min_words <= len(total_words) <= max_words: 
         st.warning(f"Please make sure that the question is between {min_words} to {max_words} words")
     else:
+        response = requests.post(f"{API_LINK}/posting_question_vector", json = {"question": question})
         st.session_state.messages.append({"role": "user", "message": question})
-
         answer = random.random()
         st.session_state.messages.append({"role": "SentinelRAG", "message": answer})
         st.rerun() ## To keep on rerunning
@@ -42,15 +41,9 @@ for message in st.session_state.messages:
     with st.chat_message(message['role']):
         st.write(message['message'])
 
-class AskQuestion(BaseModel): ## This is the base model
-    question: str = Field(lt = min_words, gt = max_words)
-
-for message in st.session_state.messages:
-    response = requests.post(f"{API_LINK}/posting_question_vector", json = {"question": question})
 
 
 
 
-    ### Converting question into the chunks 
 
 
