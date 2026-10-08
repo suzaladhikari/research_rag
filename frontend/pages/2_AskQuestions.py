@@ -8,11 +8,12 @@ max_words = 1000
 users_texts = []
 text = st.text_area(f"Enter text (between {min_words} and {max_words} words):",
     placeholder="Type your sentence here...",)
-
+users_texts.append(text)
 if st.button("Send"):
-    if text:
-        st.write(f"User: {text}")
-        st.write(random.random())
+    if users_texts:
+        for i in range(len(users_texts)):
+            st.write(f"User: {users_texts[i]}")
+            st.write(random.random())
 class AskQuestion(BaseModel):
     question: str = Field()
 
