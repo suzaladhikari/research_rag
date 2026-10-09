@@ -27,7 +27,7 @@ if st.button("Send"):
     else:
         response = requests.post(f"{API_LINK}/posting_question_vector", json = {"question": question})
         st.session_state.messages.append({"role": "user", "message": question})
-        answer = [r['similarity'] for r in response["results"]]
+        answer = "\n\n".join(f"**{r['similarity']:.2f}**: {r['text']}" for r in response["results"])
         st.session_state.messages.append({"role": "assistant", "message": answer})
         st.rerun() ## To keep on rerunning
 
