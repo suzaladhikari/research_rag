@@ -1,6 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from backend.app.routes.valid import validate_file
-from backend.app.worker import vectorize_chunks
 import boto3
 import uuid
 import os 
@@ -30,10 +29,11 @@ async def posting_router(file:UploadFile):
 
     return {f"The file has been saved to {file_name}"}
 ### Creating the sentence transformer model 
-
 sentence_model = SentenceTransformer('all-MiniLM-L6-v2')
-def vectorize_question(text: str) ->list[list[float]]: ## Each vector will be the size of 384 
-    return sentence_model.encode(text).toist()
+def vectorize_question(text: str) ->list[float]: ## Each vector will be the size of 384 
+    return sentence_model.encode(text).tolist()
+
+### Creating the pydantic base model 
 @router.post('/posting_question_vector', status_code=202)
 def posting_question_vector(question: str):
     vectors = vectorize_question(question) ## Question is embedded as one piece
