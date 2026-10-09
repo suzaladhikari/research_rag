@@ -39,7 +39,7 @@ class QuestionStatus(BaseModel):
     question: str = Field(min_length=5, max_length = 1000)
 @router.post('/posting_question_vector', status_code=202)
 def posting_question_vector(question: QuestionStatus):
-    vectors = vectorize_question(question) ## Question is embedded as one piece
+    vectors = vectorize_question(question.question) ## Question is embedded as one piece
     return vectors
     
 
