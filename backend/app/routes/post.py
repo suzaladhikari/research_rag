@@ -40,7 +40,7 @@ class QuestionStatus(BaseModel):
 @router.post('/posting_question_vector', status_code=202)
 def posting_question_vector(question: QuestionStatus):
     vectors = vectorize_question(question.question) ## Question is embedded as one piece
-    return vectors
+    return {"embedding": vectors}
     
 
 
