@@ -58,7 +58,7 @@ def posting_question_vector(question: QuestionStatus):
 
     return {"results" : [
         {"file_id" : r[0], "chunk_index" : r[1], "text": r[2], "similarity": float(r[3])} for r in rows
-    ]    }
+    ]    } ## Returns the dictionary of the top 5 similar chunks 
     
     
 

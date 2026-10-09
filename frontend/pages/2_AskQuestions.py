@@ -27,7 +27,8 @@ if st.button("Send"):
     else:
         response = requests.post(f"{API_LINK}/posting_question_vector", json = {"question": question})
         st.session_state.messages.append({"role": "user", "message": question})
-        st.session_state.messages.append({"role": "assistant", "message": response.json()['embedding']})
+        answer = [r['similarity'] for r in response["results"]]
+        st.session_state.messages.append({"role": "assistant", "message": answer})
         st.rerun() ## To keep on rerunning
 
 if st.button("Clear chat"):
