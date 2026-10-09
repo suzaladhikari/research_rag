@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, HTTPException
 from backend.app.routes.valid import validate_file
 import boto3
 import uuid
@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 import numpy as np
 from botocore.exceptions import ClientError
+from pydantic import BaseModel, Field
 load_dotenv()
 router = APIRouter()
 BUCKET_NAME = os.getenv("BUCKET_NAME")
@@ -34,8 +35,10 @@ def vectorize_question(text: str) ->list[float]: ## Each vector will be the size
     return sentence_model.encode(text).tolist()
 
 ### Creating the pydantic base model 
+class QuestionStatus(BaseModel):
+    question: str = Field(min_length=5, max_length = 1000)
 @router.post('/posting_question_vector', status_code=202)
-def posting_question_vector(question: str):
+def posting_question_vector(question: QuestionStatus):
     vectors = vectorize_question(question) ## Question is embedded as one piece
     return vectors
     
