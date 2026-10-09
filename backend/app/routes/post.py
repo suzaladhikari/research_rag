@@ -54,7 +54,11 @@ def posting_question_vector(question: QuestionStatus):
             ORDER BY embedding <=> %s::vector
             LIMIT 5 
     """, (vectors, vectors))
-        rows = cur.fetchall()
+        rows = cur.fetchall() ## 5 differnt list of tuples will be created
+
+    return {"results" : [
+        {"file_id" : r[0], "chunk_index" : r[1], "text": r[2], "similarity": float(r[3])} for r in rows
+    ]    }
     
     
 
