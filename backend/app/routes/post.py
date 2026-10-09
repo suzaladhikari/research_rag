@@ -53,7 +53,8 @@ def posting_question_vector(question: QuestionStatus):
             FROM chunks 
             ORDER BY embedding <=> %s::vector
             LIMIT 5 
-    """)
+    """, (vectors, vectors))
+        rows = cur.fetchall()
     
     
 
