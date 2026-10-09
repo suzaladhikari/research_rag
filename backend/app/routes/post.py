@@ -47,6 +47,13 @@ register_vector(connection) ##The connection now accepts the column with the vec
 @router.post('/posting_question_vector', status_code=202)
 def posting_question_vector(question: QuestionStatus):
     vectors = vectorize_question(question.question) ## Question is embedded as one piece
+    with connection.cursor() as cur: 
+        cur.execute("""
+            SELECT file_id, chunk_index, chunks, 1 - (embedding <=> %s::vector) AS similarity
+            FROM chunks 
+            ORDER BY embedding <=> %s::vector
+            LIMIT 5 
+    """)
     
     
 
