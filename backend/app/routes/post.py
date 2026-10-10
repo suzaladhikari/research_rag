@@ -14,13 +14,19 @@ from pgvector.psycopg2 import register_vector
 load_dotenv()
 router = APIRouter()
 BUCKET_NAME = os.getenv("BUCKET_NAME")
+## Creating the connection to the database 
+connection = psycopg2.connect(os.getenv("DATABASE_URL")) ## Connecting with the database
+register_vector(connection) ##The connection now accepts the column with the vecor format as well
+
+## S3 client 
 s3 = boto3.client("s3") ## Createing the boto3 client for the s3 bucket 
 @router.post('/posting_router', status_code=202)
 async def posting_router(file:UploadFile):
     content, content_type = await validate_file(file)
     ## Stripping away the path just to get the file name 
     file_name = os.path.basename(file.filename)
-    key = f'uploads/{uuid.uuid4()}/{file_name}'
+    file_id = uuid.uuid4()
+    key = f'uploads/{file_id}/{file_name}'
     try: 
         s3.put_object(
             Bucket = BUCKET_NAME, 
@@ -28,9 +34,14 @@ async def posting_router(file:UploadFile):
             Body = content, 
             ContentType = content_type
         )
+
     except ClientError as c:
         raise HTTPException(status_code=500, detail = f"S3 upload failed: {c}")
-
+    uploads = [(id_file, name_file, f"Uploaded") for i, (id_file, name_file) in enumerate(zip(file_id, file_name))]
+    with connection.cursor() as cur: 
+        cur.executemany("""
+            INSERT INTO documents 
+            """)
     return {f"The file has been saved to {file_name}"}
 ### Creating the sentence transformer model 
 sentence_model = SentenceTransformer('all-MiniLM-L6-v2')
@@ -41,9 +52,7 @@ def vectorize_question(text: str) ->list[float]: ## Each vector will be the size
 class QuestionStatus(BaseModel):
     question: str = Field(min_length=5, max_length = 1000)
 
-## Creating the connection to the database 
-connection = psycopg2.connect(os.getenv("DATABASE_URL")) ## Connecting with the database
-register_vector(connection) ##The connection now accepts the column with the vecor format as well
+
 @router.post('/posting_question_vector', status_code=202)
 def posting_question_vector(question: QuestionStatus):
     vectors = vectorize_question(question.question) ## Question is embedded as one piece
@@ -60,7 +69,8 @@ def posting_question_vector(question: QuestionStatus):
         {"file_id" : r[0], "chunk_index" : r[1], "text": r[2], "similarity": float(r[3])} for r in rows
     ]    } ## Returns the dictionary of the top 5 similar chunks 
     
-    
+### Getting the documents: 
+
 
 
     
