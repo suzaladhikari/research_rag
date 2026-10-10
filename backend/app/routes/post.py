@@ -29,6 +29,7 @@ async def posting_router(file:UploadFile):
     key = f'uploads/{file_id}/{file_name}'
 
     ## First uploading the file to the database 
+    uploads = [(id_file, name_file, "Uploaded") for i, (id_file, name_file) in enumerate(zip(file_id, file_name))]
     try:
         with connection.cursor() as cur: 
             cur.executemany("""
@@ -53,11 +54,11 @@ async def posting_router(file:UploadFile):
         )
 
     except ClientError as c:
+        with connection.cursor() as cur:
+            cur.execute("DELETE FROM documents WHERE file_id = %s", (file_id))
         raise HTTPException(status_code=500, detail = f"S3 upload failed: {c}")
 
     ## Uploading to the table 
-    uploads = [(id_file, name_file, "Uploaded") for i, (id_file, name_file) in enumerate(zip(file_id, file_name))]
-
     return {f"The file has been saved to {file_name}"}
 
 
