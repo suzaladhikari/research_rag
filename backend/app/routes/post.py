@@ -37,14 +37,26 @@ async def posting_router(file:UploadFile):
 
     except ClientError as c:
         raise HTTPException(status_code=500, detail = f"S3 upload failed: {c}")
+
+    ## Uploading to the table 
     uploads = [(id_file, name_file, "Uploaded") for i, (id_file, name_file) in enumerate(zip(file_id, file_name))]
-    with connection.cursor() as cur: 
-        cur.executemany("""
-            INSERT INTO documents (file_id, file_name, status)
-            VALUES (%s, %s, %s) 
-            """, 
-            uploads)
+    try:
+        with connection.cursor() as cur: 
+            cur.executemany("""
+                INSERT INTO documents (file_id, file_name, status)
+                VALUES (%s, %s, %s) 
+                """, 
+                uploads)
+            connection.commit()
+    except Exception:
+        connection.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail = "File has been uploaded to S3, but saving the document failed "
+        )
     return {f"The file has been saved to {file_name}"}
+
+
 ### Creating the sentence transformer model 
 sentence_model = SentenceTransformer('all-MiniLM-L6-v2')
 def vectorize_question(text: str) ->list[float]: ## Each vector will be the size of 384 
