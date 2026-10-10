@@ -25,21 +25,10 @@ async def posting_router(file:UploadFile):
     content, content_type = await validate_file(file)
     ## Stripping away the path just to get the file name 
     file_name = os.path.basename(file.filename)
-    file_id = uuid.uuid4()
+    file_id = str(uuid.uuid4())
     key = f'uploads/{file_id}/{file_name}'
-    try: 
-        s3.put_object(
-            Bucket = BUCKET_NAME, 
-            Key = key, 
-            Body = content, 
-            ContentType = content_type
-        )
 
-    except ClientError as c:
-        raise HTTPException(status_code=500, detail = f"S3 upload failed: {c}")
-
-    ## Uploading to the table 
-    uploads = [(id_file, name_file, "Uploaded") for i, (id_file, name_file) in enumerate(zip(file_id, file_name))]
+    ## First uploading the file to the database 
     try:
         with connection.cursor() as cur: 
             cur.executemany("""
@@ -54,6 +43,21 @@ async def posting_router(file:UploadFile):
             status_code=500,
             detail = "File has been uploaded to S3, but saving the document failed "
         )
+    ### Uploading in the s3 now ! 
+    try: 
+        s3.put_object(
+            Bucket = BUCKET_NAME, 
+            Key = key, 
+            Body = content, 
+            ContentType = content_type
+        )
+
+    except ClientError as c:
+        raise HTTPException(status_code=500, detail = f"S3 upload failed: {c}")
+
+    ## Uploading to the table 
+    uploads = [(id_file, name_file, "Uploaded") for i, (id_file, name_file) in enumerate(zip(file_id, file_name))]
+
     return {f"The file has been saved to {file_name}"}
 
 
