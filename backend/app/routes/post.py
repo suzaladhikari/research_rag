@@ -37,11 +37,13 @@ async def posting_router(file:UploadFile):
 
     except ClientError as c:
         raise HTTPException(status_code=500, detail = f"S3 upload failed: {c}")
-    uploads = [(id_file, name_file, f"Uploaded") for i, (id_file, name_file) in enumerate(zip(file_id, file_name))]
+    uploads = [(id_file, name_file, "Uploaded") for i, (id_file, name_file) in enumerate(zip(file_id, file_name))]
     with connection.cursor() as cur: 
         cur.executemany("""
-            INSERT INTO documents 
-            """)
+            INSERT INTO documents (file_id, file_name, status)
+            VALUES (%s, %s, %s) 
+            """, 
+            uploads)
     return {f"The file has been saved to {file_name}"}
 ### Creating the sentence transformer model 
 sentence_model = SentenceTransformer('all-MiniLM-L6-v2')
