@@ -1,1 +1,1 @@
-SELECT * from chunks;
+SELECT * from documents;
