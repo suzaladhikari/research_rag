@@ -29,20 +29,19 @@ async def posting_router(file:UploadFile):
     key = f'uploads/{file_id}/{file_name}'
 
     ## First uploading the file to the database 
-    uploads = [(id_file, name_file, "Uploaded") for i, (id_file, name_file) in enumerate(zip(file_id, file_name))]
     try:
         with connection.cursor() as cur: 
-            cur.executemany("""
+            cur.execute("""
                 INSERT INTO documents (file_id, file_name, status)
                 VALUES (%s, %s, %s) 
                 """, 
-                uploads)
+                (file_id, file_name, "uploaded"))
             connection.commit()
     except Exception:
         connection.rollback()
         raise HTTPException(
             status_code=500,
-            detail = "File has been uploaded to S3, but saving the document failed "
+            detail = "Saving the document failed"
         )
     ### Uploading in the s3 now ! 
     try: 
@@ -55,7 +54,8 @@ async def posting_router(file:UploadFile):
 
     except ClientError as c:
         with connection.cursor() as cur:
-            cur.execute("DELETE FROM documents WHERE file_id = %s", (file_id))
+            cur.execute("DELETE FROM documents WHERE file_id = %s", (file_id,))
+        connection.commit()
         raise HTTPException(status_code=500, detail = f"S3 upload failed: {c}")
 
     ## Uploading to the table 
