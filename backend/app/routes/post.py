@@ -110,7 +110,7 @@ def delete_object(file_id: str):
         uuid.UUID(file_id) ## rejecting if it is not the valid uid 
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid file id")
-    with connection.cursor as cur:
+    with connection.cursor() as cur:
         cur.execute("SELECT file_name FROM documents WHERE file_id = %s", (file_id, ))
         row = cur.fetchone()
     if row is None:
@@ -133,7 +133,8 @@ def delete_object(file_id: str):
         raise HTTPException(status_code=500, detail="Deleting document failed")
 
     ### Deleting the file form the s3 as well 
-    s3.delete_object(bucket = BUCKET_NAME, Key = f"uploads/{file_id}/{file_name}")
+    s3.delete_object(Bucket = BUCKET_NAME, Key = f"uploads/{file_id}/{file_name}")
+    return {"deleted": file_id}
 
     
 
