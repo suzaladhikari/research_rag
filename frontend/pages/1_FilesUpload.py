@@ -16,10 +16,15 @@ if uploaded_files and st.button("Submit"):
         if response.status_code == 202:
             file_information = requests.get(f"{API_LINK}/documents")
             for inf in file_information.json():
-                c1, c2 = st.columns([6,2])
+                c1, c2, c3 = st.columns([6,2,1])
                 c1.write(inf["file_name"])
                 c2.write(inf["status"])
-                st.rerun()
+                if c3.button("🗑️", key = f"del_{inf['file_id']}"):
+                    r = requests.delete(f"{API_LINK}/documents/{inf["file_id"]}")
+                    if r.ok:
+                        st.rerun()
+                    else:
+                        st.warning(f"Delete failed : {r.status_code} {r.text}")
         else: 
             st.warning(response.status_code)
 
