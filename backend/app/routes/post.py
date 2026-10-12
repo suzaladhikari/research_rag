@@ -111,5 +111,23 @@ def delete_object(file_id: str):
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid file id")
 
+    ### Removing the records from both chunks and database 
+    try:
+        with connection.cursor() as cur:
+            cur.execute("DELETE FROM chunks WHERE file_id = %s", (file_id, ))
+            cur.execute("DELETE FROM documents WHERE file_id = %s", (file_id, ))
+            if cur.rowcount == 0:
+                connection.rollback()
+                raise HTTPException(status_code=404, detail = "Document not found")
+        connection.commit()
+    except HTTPException:
+        raise
+    except Exception as e:
+        connection.rollback()
+        print(f"deleting failed : {e} ")
+        raise HTTPException(status_code=500, detail="Deleting document failed")
+        
+
+
     
 
