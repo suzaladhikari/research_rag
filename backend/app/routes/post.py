@@ -96,6 +96,10 @@ def documents():
         SELECT file_id, file_name, status
         from documents 
         """)
+        rows = cur.fetchall()
+    return [
+        {"file_id":r[0], "file_name":r[1], "status":r[2]} for r in rows
+    ]
 
 
 
