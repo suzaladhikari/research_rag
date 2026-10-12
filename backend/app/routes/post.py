@@ -91,7 +91,7 @@ def posting_question_vector(question: QuestionStatus):
 ### Getting the documents endpoint 
 @router.get('/documents')
 def documents():
-    with connection.cursor as cur: 
+    with connection.cursor() as cur: 
         cur.execute("""
         SELECT file_id, file_name, status
         from documents 
