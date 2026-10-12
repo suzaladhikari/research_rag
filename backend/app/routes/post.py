@@ -110,8 +110,9 @@ def delete_object(file_id: str):
         uuid.UUID(file_id) ## rejecting if it is not the valid uid 
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid file id")
-    cur.execute("SELECT file_name FROM documents WHERE file_id = %s", (file_id, ))
-    row = cur.fetchone()
+    with connection.cursor as cur:
+        cur.execute("SELECT file_name FROM documents WHERE file_id = %s", (file_id, ))
+        row = cur.fetchone()
     if row is None:
         raise HTTPException(status_code=404, detail="Document not found")
     file_name = row[0]
