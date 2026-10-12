@@ -1,6 +1,6 @@
-CREATE table documents (
-    file_id TEXT PRIMARY KEY,  -- For the file id 
-    file_name TEXT NOT NULL,  -- This gives the file name back 
-    status TEXT NOT NULL DEFAULT 'uploaded', -- This returns the uploaded status
+CREATE TABLE documents (
+    file_id TEXT PRIMARY KEY,
+    file_name TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'uploaded',
     uploaded_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-)
+);
