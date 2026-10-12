@@ -1,1 +1,1 @@
-SELECT * from documents;
+TRUNCATE TABLE chunks;
