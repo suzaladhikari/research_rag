@@ -103,7 +103,7 @@ def documents():
 
 
 ## Creating the deleting statement: 
-@router.get('/documents/{file_id}'):
+@router.delete('/documents/{file_id}')
 def delete_object(file_id: str):
     ### Detecting if it is the valid file_id or not 
     try:
@@ -126,7 +126,6 @@ def delete_object(file_id: str):
         connection.rollback()
         print(f"deleting failed : {e} ")
         raise HTTPException(status_code=500, detail="Deleting document failed")
-        
 
 
     
