@@ -104,7 +104,12 @@ def documents():
 
 ## Creating the deleting statement: 
 @router.get('/documents/{file_id}'):
-
+def delete_object(file_id: str):
+    ### Detecting if it is the valid file_id or not 
+    try:
+        uuid.UUID(file_id) ## rejecting if it is not the valid uid 
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid file id")
 
     
 
