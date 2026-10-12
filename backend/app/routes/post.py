@@ -110,7 +110,7 @@ def delete_object(file_id: str):
         uuid.UUID(file_id) ## rejecting if it is not the valid uid 
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid file id")
-
+    cur.execute("SELECT file_name FROM documents WHERE file_id = %s", (file_id, ))
     ### Removing the records from both chunks and database 
     try:
         with connection.cursor() as cur:
@@ -128,9 +128,7 @@ def delete_object(file_id: str):
         raise HTTPException(status_code=500, detail="Deleting document failed")
 
     ### Deleting the file form the s3 as well 
-    try: 
-        files_from_file_id = s3.list_objects_v2(Bucket = BUCKET_NAME, Prefix = f"uploads/{file_id}/")
-
+    s3.delet_object(bucket = BUCKET_NAME, Key = f"uploads/{file_id}/")
 
     
 
