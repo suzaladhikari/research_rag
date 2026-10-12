@@ -127,6 +127,10 @@ def delete_object(file_id: str):
         print(f"deleting failed : {e} ")
         raise HTTPException(status_code=500, detail="Deleting document failed")
 
+    ### Deleting the file form the s3 as well 
+    try: 
+        files_from_file_id = s3.list_objects_v2(Bucket = BUCKET_NAME, Prefix = f"uploads/{file_id}/")
+
 
     
 
