@@ -102,6 +102,8 @@ def documents():
     ]
 
 
+## Creating the deleting statement: 
+@router.get('/documents/{file_id}'):
 
 
     
