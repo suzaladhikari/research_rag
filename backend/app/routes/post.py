@@ -150,5 +150,6 @@ def context_creater(similar_details):
     The top 5 context are given below"""
 
     context = "\n\n".join(f"""[{i+1}], ({c["file_name"]}), chunk {c["chunk_index"]})\n{c["text"]}""" for  i,c in enumerate(similar_details["results"]))
-    return context
+    final_message = f"{system_message}\n{context}"
+    return final_message
 
