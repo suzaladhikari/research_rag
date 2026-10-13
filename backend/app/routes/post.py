@@ -85,7 +85,7 @@ def posting_question_vector(question: QuestionStatus):
         rows = cur.fetchall() ## 5 differnt list of tuples will be created
 
     return {"results" : [
-        {"file_id" : r[0], "chunk_index" : r[1], "text": r[2], "similarity": float(r[3])} for r in rows
+        {"file_id" : r[0], "chunk_index" : r[1], "text": r[2], "similarity": float(r[3]), "file_name": r[4]} for r in rows
     ]    } ## Returns the dictionary of the top 5 similar chunks 
     
 ### Getting the documents endpoint 
