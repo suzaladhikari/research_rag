@@ -77,7 +77,7 @@ def posting_question_vector(question: QuestionStatus):
     vectors = vectorize_question(question.question) ## Question is embedded as one piece
     with connection.cursor() as cur: 
         cur.execute("""
-            SELECT file_id, chunk_index, chunks, 1 - (embedding <=> %s::vector) AS similarity
+            SELECT file_id, chunk_index, chunks, 1 - (embedding <=> %s::vector) AS similarity,file_name
             FROM chunks 
             ORDER BY embedding <=> %s::vector
             LIMIT 5 
