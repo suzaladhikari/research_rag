@@ -84,9 +84,11 @@ def posting_question_vector(question: QuestionStatus):
     """, (vectors, vectors))
         rows = cur.fetchall() ## 5 differnt list of tuples will be created
 
-    return {"results" : [
+    similar_details = {"results" : [
         {"file_id" : r[0], "chunk_index" : r[1], "text": r[2], "similarity": float(r[3]), "file_name": r[4]} for r in rows
-    ]    } ## Returns the dictionary of the top 5 similar chunks 
+    ]    } ## Returns the dictionary of the top 5 similar chunks
+    out = context_creater(similar_details)
+    return out 
     
 ### Getting the documents endpoint 
 @router.get('/documents')
@@ -137,4 +139,8 @@ def delete_object(file_id: str):
     return {"deleted": file_id}
 
     
+
+### Creating the context for the llm and generating the response 
+def context_creater(similar_details:list[dict]):
+    return type(similar_details)
 
