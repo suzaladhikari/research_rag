@@ -88,7 +88,7 @@ def posting_question_vector(question: QuestionStatus):
         {"file_id" : r[0], "chunk_index" : r[1], "text": r[2], "similarity": float(r[3]), "file_name": r[4]} for r in rows
     ]    } ## Returns the dictionary of the top 5 similar chunks
     out = context_creater(similar_details)
-    return out 
+    return {"output" : out} 
     
 ### Getting the documents endpoint 
 @router.get('/documents')
@@ -141,6 +141,10 @@ def delete_object(file_id: str):
     
 
 ### Creating the context for the llm and generating the response 
-def context_creater(similar_details:list[dict]):
-    return type(similar_details)
+def context_creater(similar_details):
+    system_message = """You are a research assistant that answers questions about uploaded
+    documents. Use only the context provided. If the context does not
+    contain the answer, say you don't know. Some chunks begin or end
+    mid-sentence, so don't guess how a cut-off sentence ends. Cite
+    sources like [1], [2]. Quote numbers exactly as they appear."""
 
