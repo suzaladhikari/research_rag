@@ -149,6 +149,6 @@ def context_creater(similar_details):
     sources like [1], [2]. Quote numbers exactly as they appear.
     The top 5 context are given below"""
 
-    context = "\n\n".join(f"[{i+1}], ({c.file_name}), chunk {c.chunk_index})\n{c.text}" for  i,c in enumerate(similar_details["results"]))
-    return context 
+    context = "\n\n".join(f"""[{i+1}], ({c["file_name"]}), chunk {c["chunk_index"]})\n{c["text"]}""" for  i,c in enumerate(similar_details["results"]))
+    return context
 
