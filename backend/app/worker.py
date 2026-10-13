@@ -31,7 +31,7 @@ def register_into_database(chunks,vectors, file_id, file_name):
     with connection.cursor() as cur: ## Used to add the record in the database
         cur.executemany(
             """
-            INSERT INTO chunks (id, file_id, file_name, chunk_index, chunks, embedding)
+            INSERT INTO chunks (id, file_id, chunk_index, chunks, embedding, file_name)
             VALUES (%s, %s, %s, %s, %s, %s)
             """, 
             rows
