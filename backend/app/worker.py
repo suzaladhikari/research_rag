@@ -9,7 +9,7 @@ import tempfile
 from pypdf import PdfReader
 import numpy as np
 from sentence_transformers import SentenceTransformer
-
+from fastapi import HTTPException
 load_dotenv()
 ### Creating connection with the database 
 connection = psycopg2.connect(os.getenv("DATABASE_URL")) ## Connecting with the database
@@ -23,10 +23,10 @@ sqs = boto3.client("sqs", region_name="us-east-1")
 s3 = boto3.client("s3", region_name="us-east-1")
 
 ## Registering into the database 
-def register_into_database(chunks,vectors, file_id):
+def register_into_database(chunks,vectors, file_id, file_name):
     ## Creating rows
     rows = [
-        (f"{file_id}_{i}", file_id, i, text, np.array(emb)) for i, (text,emb) in enumerate(zip(chunks, vectors))
+        (f"{file_id}_{i}", file_id, i, text, np.array(emb), file_name) for i, (text,emb) in enumerate(zip(chunks, vectors))
     ]
     with connection.cursor() as cur: ## Used to add the record in the database
         cur.executemany(
@@ -71,11 +71,17 @@ def process_file(bucket_name:str, key:str) -> None:
         file_id = key.split("/")[1]
         print(f"Download s3://{bucket_name}/{key}, (size = {size})")
         text = extract_text(local_path)
+        with connection.cursor() as cur:
+            cur.execute("SELECT file_name FROM documents WHERE file_id = %s", (file_id, ))
+            row = cur.fetchone()
+        if row is None:
+            raise HTTPException(status_code=404, detail="Document not found")
+        file_name = row[0]
         if not text:
             print(f"no text found in {key}")
         chunks = chunk_text(text)
         vectors = vectorize_chunks(chunks)
-        register_into_database(chunks,vectors, file_id)
+        register_into_database(chunks,vectors, file_id, file_name)
 
         print(f"For the text with size {len(text)} total of {len(chunks[0])} chunks have been created")
         print(f"For the text with size {len(text)} total of {len(vectors[0])} vectors have been created")
