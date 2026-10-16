@@ -10,6 +10,7 @@ from botocore.exceptions import ClientError
 from pydantic import BaseModel, Field
 import psycopg2
 from pgvector.psycopg2 import register_vector
+import anthropic 
 
 load_dotenv()
 router = APIRouter()
