@@ -157,7 +157,7 @@ def context_creater(similar_details, question):
     client = anthropic.Anthropic()
     response = client.messages.create(
         model = 'claude-3-5-sonnet-latest',
-        max_tokens = 1024
+        max_tokens = 1024,
         messages=[{
             "role":"user", 
             "content":f"Context:\n{final_message}\n\n Question: {question}"
