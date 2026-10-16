@@ -19,6 +19,8 @@ BUCKET_NAME = os.getenv("BUCKET_NAME")
 connection = psycopg2.connect(os.getenv("DATABASE_URL")) ## Connecting with the database
 register_vector(connection) ##The connection now accepts the column with the vecor format as well
 
+### Anthropic Client 
+client = anthropic.Anthropic()
 ## S3 client 
 s3 = boto3.client("s3") ## Createing the boto3 client for the s3 bucket 
 @router.post('/posting_router', status_code=202)
@@ -88,7 +90,7 @@ def posting_question_vector(question: QuestionStatus):
     similar_details = {"results" : [
         {"file_id" : r[0], "chunk_index" : r[1], "text": r[2], "similarity": float(r[3]), "file_name": r[4]} for r in rows
     ]    } ## Returns the dictionary of the top 5 similar chunks
-    out = context_creater(similar_details)
+    out = context_creater(similar_details, question)
     return {"output" : out} 
     
 ### Getting the documents endpoint 
@@ -142,7 +144,7 @@ def delete_object(file_id: str):
     
 
 ### Creating the context for the llm and generating the response 
-def context_creater(similar_details):
+def context_creater(similar_details, question):
     system_message = """You are a research assistant that answers questions about uploaded
     documents. Use only the context provided. If the context does not
     contain the answer, say you don't know. Some chunks begin or end
@@ -152,7 +154,15 @@ def context_creater(similar_details):
 
     context = "\n\n".join(f"""[{i+1}], ({c["file_name"]}), chunk {c["chunk_index"]})\n{c["text"]}""" for  i,c in enumerate(similar_details["results"]))
     final_message = system_message + "\n" + context
+    client = anthropic.Anthropic()
+    response = client.messages.create(
+        model = 'claude-3-5-sonnet-latest',
+        max_tokens = 1024
+        messages=[{
+            "role":"user", 
+            "content":f"Context:\n{final_message}\n\n Question: {question}"
+        }]
+    )
+
     return final_message
 
-### Creating the model 
-client = anthropic.Anthropic()
