@@ -155,9 +155,8 @@ def context_creater(similar_details, question):
 
     context = "\n\n".join(f"""[{i+1}], ({c["file_name"]}), chunk {c["chunk_index"]})\n{c["text"]}""" for  i,c in enumerate(similar_details["results"]))
     final_message = system_message + "\n" + context
-    client = anthropic.Anthropic()
-    response = client.messages.create(
-        model = 'claude-3-5-sonnet-latest',
+    response = client.models.generate_content(
+        model = 'gemini-flash-latest',
         max_tokens = 1024,
         system="You are a helpful assistant.",
         messages=[{
