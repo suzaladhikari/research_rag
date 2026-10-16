@@ -167,6 +167,7 @@ def context_creater(similar_details, question):
         ),
         contents = f"Context:\n{final_message}\n\nQuestion:\n{question}"
     )
-    final_message = response.content[0].text
-    return final_message
+    if not response.text:
+        raise ValueError("AI returned no text")
+    return response.text
 
