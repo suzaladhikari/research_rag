@@ -163,6 +163,6 @@ def context_creater(similar_details, question):
             "content":f"Context:\n{final_message}\n\n Question: {question}"
         }]
     )
-
+    final_message = response.content[0].text
     return final_message
 
