@@ -156,7 +156,7 @@ def context_creater(similar_details, question):
     context = "\n\n".join(f"""[{i+1}], ({c["file_name"]}), chunk {c["chunk_index"]})\n{c["text"]}""" for  i,c in enumerate(similar_details["results"]))
     final_message = system_message + "\n" + context
     response = client.models.generate_content(
-        model = 'gemini-flash-latest',
+        model = 'gemini-3.5-flash-lite',
         config = types.GenerateContentConfig(
             system_instruction=(
                 "Answer using only the provided context. "
