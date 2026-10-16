@@ -158,6 +158,7 @@ def context_creater(similar_details, question):
     response = client.messages.create(
         model = 'claude-3-5-sonnet-latest',
         max_tokens = 1024,
+        system="You are a helpful assistant.",
         messages=[{
             "role":"user", 
             "content":f"Context:\n{final_message}\n\n Question: {question}"
