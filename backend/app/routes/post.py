@@ -154,3 +154,5 @@ def context_creater(similar_details):
     final_message = system_message + "\n" + context
     return final_message
 
+### Creating the model 
+client = anthropic.Anthropic()
