@@ -21,7 +21,7 @@ connection = psycopg2.connect(os.getenv("DATABASE_URL")) ## Connecting with the 
 register_vector(connection) ##The connection now accepts the column with the vecor format as well
 
 ### Anthropic Client 
-client = anthropic.Anthropic()
+client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 ## S3 client 
 s3 = boto3.client("s3") ## Createing the boto3 client for the s3 bucket 
 @router.post('/posting_router', status_code=202)
