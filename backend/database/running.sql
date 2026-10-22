@@ -1,2 +1,1 @@
-ALTER TABLE chunks
-ADD COLUMN IF NOT EXISTS file_name TEXT;
+SELECT * from chunks
