@@ -7,7 +7,7 @@ COPY backened/requirements.txt requirements.txt
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY routes/ ./routes/
+COPY backend/app/main.py ./backend/app/main.py
+COPY backend/app/routes/ ./backend/app/routes/
 
-COPY main.py .
-
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
