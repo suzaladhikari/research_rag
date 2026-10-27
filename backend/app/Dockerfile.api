@@ -5,6 +5,9 @@ WORKDIR /fastapi #This is the working directory that will be used in the contain
 
 COPY backend/app/requirements-api.txt ./requirements.txt
 
+RUN pip install --no-cache-dir torch \
+    --index-url https://download.pytorch.org/whl/cpu
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY backend/app/main.py ./backend/app/main.py
