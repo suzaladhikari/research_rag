@@ -1,2 +1,6 @@
 ### This is the docker file for the api 
 FROM python:3.11-slim  
+
+WORKDIR /fastapi #This is the working directory that will be used in the container 
+
+COPY backened/requirements.txt requirements.txt
