@@ -6,3 +6,8 @@ WORKDIR /fastapi #This is the working directory that will be used in the contain
 COPY backened/requirements.txt requirements.txt
 
 RUN pip install --no-cache-dir -r requirements.txt
+
+COPY routes/ ./routes/
+
+COPY main.py .
+
