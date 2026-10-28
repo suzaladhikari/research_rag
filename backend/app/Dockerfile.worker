@@ -1,0 +1,4 @@
+### This is the docker file for the worker 
+FROM python:3.11-slim  
+WORKDIR /worker
+COPY backend/app/requirements-worker.txt ./requirements.txt
