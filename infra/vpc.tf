@@ -14,3 +14,9 @@ resource "aws_vpc" "main" {
     enable_dns_support = true
     enable_dns_hostnames = true
 }
+### Creating the public subnet first
+resource "aws_subnet" "public" {
+    count = 2
+    
+  
+}
