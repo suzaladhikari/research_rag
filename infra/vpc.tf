@@ -29,6 +29,11 @@ resource "aws_subnet" "private" {
     cidr_block = local.private_cidrs[count.index]
     availability_zone = local.azs[count.index]
     tags = {Name = "research-rag-private-${local.azs[count.index]}"} 
+}
 
-  
+## Creating the internet gateway so that the public subnets can communicate to the internet
+
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.main.id
+  tags   = { Name = "research-rag-igw" }
 }
