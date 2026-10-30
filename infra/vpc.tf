@@ -34,6 +34,16 @@ resource "aws_subnet" "private" {
 ## Creating the internet gateway so that the public subnets can communicate to the internet
 
 resource "aws_internet_gateway" "main" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.main.id ## which vpc it belongs to 
   tags   = { Name = "research-rag-igw" }
+}
+
+## Giving direction for the public subnets to access the internet 
+resource "aws_route_table" "name" {
+  vpc_id = aws_vpc.main.id ## which vpc it belongs to 
+  route = {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
+  }
+
 }
