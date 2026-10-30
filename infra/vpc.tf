@@ -39,7 +39,7 @@ resource "aws_internet_gateway" "main" {
 }
 
 ## Giving direction for the public subnets to access the internet 
-resource "aws_route_table" "name" {
+resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id ## which vpc it belongs to 
   route = {
     cidr_block = "0.0.0.0/0"
@@ -47,4 +47,11 @@ resource "aws_route_table" "name" {
   }
   tags = {Name = "research-rag-public-rt"}
 
+}
+
+## Applying the route table instructino to both subnets 
+resource "aws_route_table_association" "public" {
+  count = 2
+  subnet_id = aws_subnet.public[count.index].id
+  route_table_id = aws_route_table.public.id
 }
