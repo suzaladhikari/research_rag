@@ -28,6 +28,7 @@ resource "aws_subnet" "private" {
     vpc_id = aws_vpc.main.id 
     cidr_block = local.private_cidrs[count.index]
     availability_zone = local.azs[count.index]
+    tags = {Name = "research-rag-private-${local.azs[count.index]}"} 
 
   
 }
