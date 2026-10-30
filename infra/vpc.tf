@@ -17,6 +17,9 @@ resource "aws_vpc" "main" {
 ### Creating the public subnet first
 resource "aws_subnet" "public" {
     count = 2
+    vpc_id = aws_vpc.main.id ## Both belong to the VPC created as main 
+    cidr_block = local.public_cidrs[count.index] ## Give each subnet its corresponding address range from the lcoal.public_cidrs 
     
+
   
 }
