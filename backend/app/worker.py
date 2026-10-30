@@ -15,7 +15,7 @@ load_dotenv()
 connection = psycopg2.connect(os.getenv("DATABASE_URL")) ## Connecting with the database
 register_vector(connection) ##The connection now accepts the column with the vecor format as well
 
-### Tranformer model 
+### Tranformer model to be used
 sentence_model = SentenceTransformer('all-MiniLM-L6-v2')
 
 SQS_URL = os.getenv("SQS_URL")
