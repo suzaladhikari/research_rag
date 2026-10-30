@@ -21,5 +21,11 @@ resource "aws_subnet" "public" {
     cidr_block = local.public_cidrs[count.index] ## Give each subnet its corresponding address range from the lcoal.public_cidrs 
     availability_zone = local.azs[count.index]
     tags = {Name = "research-rag-public-${local.azs[count.index]}"} ## The name would look like research-rag-public-us-east-1a/1b
+}
 
+resource "aws_subnet" "private" {
+    count = 2
+    vpc_id = aws_vpc.main.id 
+    
+  
 }
