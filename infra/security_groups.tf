@@ -8,11 +8,11 @@ resource "aws_security_group" "alb" {
     to_port = 80
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-  } ## What kind of traffic should be allowed to come 
+  } ## This is the from Users -> ALB, on port 80
   egress = {
     from_port = 0
     to_port = 0 
     protocol = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }
+  } ### This is from ALB to all the tasks 
 }
