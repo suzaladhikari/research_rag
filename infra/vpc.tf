@@ -42,7 +42,7 @@ resource "aws_internet_gateway" "main" {
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id ## which vpc it belongs to 
   route { ## This makes the subnet public and allows to communicate
-    cidr_block = "0.0.0.0/0" ## anything that is going to the internet
+    cidr_block = "0.0.0.0/0" ## anything that is going to the internet, or everything outside vpc 
     gateway_id = aws_internet_gateway.main.id  ## sent it through IGW
   }
   tags = {Name = "research-rag-public-rt"}

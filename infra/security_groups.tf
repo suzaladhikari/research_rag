@@ -27,6 +27,6 @@ resource "aws_security_group" "ui" {
     from_port = 8501
     to_port = 8501
     protocol = "tcp"
-    cidr_blocks = 
+    cidr_blocks = [aws_security_group.alb.id] ## Only resources or request with ALB security group can connect 
   }
 }
