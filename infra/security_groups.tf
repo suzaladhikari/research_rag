@@ -41,5 +41,9 @@ resource "aws_security_group" "api" {
   name = "research-rag-api"
   vpc_id = aws_vpc.main.id 
   description = "This is the security group for the api"
-  
+  ingress {
+    from_port = 8000
+    to_port = 8000
+    security_groups = [aws_security_group.ui.id]
+  }
 }
