@@ -74,4 +74,9 @@ resource "aws_security_group" "worker" {
 resource "aws_security_group" "rds" {
   name = "research-rag-rds"
   vpc_id = aws_vpc.main.id
+  description = "RAG DATABASE"
+  ingress {
+    from_port = 8000
+    to_port = 8000
+  }
 }
