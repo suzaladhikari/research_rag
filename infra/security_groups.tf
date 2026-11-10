@@ -27,12 +27,12 @@ resource "aws_security_group" "ui" {
     from_port = 8501
     to_port = 8501
     protocol = "tcp"
-    cidr_blocks = [aws_security_group.alb.id] ## Only resources or request with ALB security group can connect 
+    security_groups = [aws_security_group.alb.id] ## Only resources or request with ALB security group can connect 
   }
   egress {## egress can connec to anything with any protocol 
     from_port = 0
     to_port = 0 
     protocol = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"] ### Can be any destination 
   }
 }
