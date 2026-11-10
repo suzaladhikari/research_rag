@@ -39,4 +39,7 @@ resource "aws_security_group" "ui" {
 
 resource "aws_security_group" "api" {
   name = "research-rag-api"
+  vpc_id = aws_vpc.main.id 
+  description = "This is the security group for the api"
+  
 }
