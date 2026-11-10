@@ -36,3 +36,7 @@ resource "aws_security_group" "ui" {
     cidr_blocks = ["0.0.0.0/0"] ### Can be any destination 
   }
 }
+
+resource "aws_security_group" "api" {
+  name = "research-rag-api"
+}
