@@ -38,12 +38,12 @@ resource "aws_internet_gateway" "main" {
   tags   = { Name = "research-rag-igw" }
 }
 
-## Giving direction for the public subnets to access the internet 
+## Giving direction for the public subnets to access the internet. It works like a GPS, each rule says if the data is going to this address, send it this way 
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id ## which vpc it belongs to 
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.main.id
+  route { ## This makes the subnet public and allows to communicate
+    cidr_block = "0.0.0.0/0" ## anything that is going to the internet
+    gateway_id = aws_internet_gateway.main.id  ## sent it through IGW
   }
   tags = {Name = "research-rag-public-rt"}
 
