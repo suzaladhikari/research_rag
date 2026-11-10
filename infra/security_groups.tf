@@ -72,5 +72,6 @@ resource "aws_security_group" "worker" {
 
 ## Creating the security group for rds 
 resource "aws_security_group" "rds" {
-  
+  name = "research-rag-rds"
+  vpc_id = aws_vpc.main.id
 }
