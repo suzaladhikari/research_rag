@@ -58,6 +58,8 @@ resource "aws_security_group" "api" {
 ## Setting up for the worker 
 resource "aws_security_group" "worker" {
   name = "research-rag-worker"
+  vpc_id = aws_vpc.main.id 
+  description = "This is the worker that does all the task"
   
   
 }
