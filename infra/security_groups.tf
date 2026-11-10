@@ -54,3 +54,10 @@ resource "aws_security_group" "api" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+## Setting up for the worker 
+resource "aws_security_group" "worker" {
+  name = "research-rag-worker"
+  
+  
+}
