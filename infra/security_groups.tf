@@ -78,5 +78,7 @@ resource "aws_security_group" "rds" {
   ingress {
     from_port = 8000
     to_port = 8000
+    protocol = "tcp"
+    security_groups = [aws_security_group.api.id, aws_security_group.worker.id]
   }
 }
