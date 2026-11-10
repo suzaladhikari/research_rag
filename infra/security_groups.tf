@@ -69,3 +69,8 @@ resource "aws_security_group" "worker" {
   }
   
 }
+
+## Creating the security group for rds 
+resource "aws_security_group" "rds" {
+  
+}
