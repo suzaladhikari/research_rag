@@ -1,6 +1,6 @@
 ### This file is for the database that will be hosted in RDS 
 resource "aws_db_subnet_group" "rds" {
-  name = "researhc-rag-rds-subnets"
+  name = "research-rag-rds-subnets"
   subnet_ids = [aws_subnet.private[0].id, aws_subnet.private[1].id] ## Giving exact location on where to put the RDS i.e. private subnets
 }
 resource "aws_db_instance" "pg" {
@@ -17,5 +17,9 @@ resource "aws_db_instance" "pg" {
   db_name = "rag_db"
   username = "rag_admin" ## Username for the database 
   manage_master_user_password = true ## This stores the password for the database created 
+
+  db_subnet_group_name = aws_db_subnet_group.rds.name ## Use the research-rag-rds-subnets subnet group to put the rds 
+  
+
 
 }
