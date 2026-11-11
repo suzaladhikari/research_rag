@@ -20,7 +20,13 @@ resource "aws_db_instance" "pg" {
 
   db_subnet_group_name = aws_db_subnet_group.rds.name ## Use the research-rag-rds-subnets subnet group to put the rds 
   vpc_security_group_ids = [aws_security_group.rds.id] ## Uses the security group RDS 
-  
+  publicly_accessible = false 
+  multi_az = false ## the databse will be updated in only one !
+
+  ## Additional security and what happens when the RDS is deleted 
+  backup_retention_period = 1 ## If exceeding then 1 day the backup will be erased 
+  skip_final_snapshot = true ## Not having the final screen shot of the rds instance looks like 
+  deletion_protection = false ## Allowing the instance to be deleted
 
 
 }
