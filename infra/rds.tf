@@ -7,4 +7,8 @@ resource "aws_db_instance" "pg" {
   identifier = "research-rag-db"
   engine = "postgres"
   engine_version = "16"
+  ## Setting up the rds server computing power and storage 
+  instance_class = "db.t4g.micro" ## Choosing the server's RAM and CPU
+  allocated_storage = 20 ## Allocating 20 GiB of storage 
+
 }
