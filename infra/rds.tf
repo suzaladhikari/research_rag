@@ -10,5 +10,7 @@ resource "aws_db_instance" "pg" {
   ## Setting up the rds server computing power and storage 
   instance_class = "db.t4g.micro" ## Choosing the server's RAM and CPU
   allocated_storage = 20 ## Allocating 20 GiB of storage 
+  storage_type = "gp3" ## Uses SSD 
+  storage_encrypted = true ## Encrypts the data 
 
 }
