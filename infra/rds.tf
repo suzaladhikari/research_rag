@@ -19,6 +19,7 @@ resource "aws_db_instance" "pg" {
   manage_master_user_password = true ## This stores the password for the database created 
 
   db_subnet_group_name = aws_db_subnet_group.rds.name ## Use the research-rag-rds-subnets subnet group to put the rds 
+  vpc_security_group_ids = [aws_security_group.rds.id] ## Uses the security group RDS 
   
 
 
