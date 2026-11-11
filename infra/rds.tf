@@ -4,7 +4,7 @@ resource "aws_db_subnet_group" "rds" {
   subnet_ids = [aws_subnet.private[0].id, aws_subnet.private[1].id] ## Giving exact location on where to put the RDS i.e. private subnets
 }
 resource "aws_db_instance" "pg" {
-  identifier = "research-rag-db"
+  identifier = "research-rag-db" ## RDS instance in AWS/ "research-rag-db" belongs to this project 
   engine = "postgres"
   engine_version = "16"
   ## Setting up the rds server computing power and storage 
@@ -12,5 +12,10 @@ resource "aws_db_instance" "pg" {
   allocated_storage = 20 ## Allocating 20 GiB of storage 
   storage_type = "gp3" ## Uses SSD 
   storage_encrypted = true ## Encrypts the data 
+
+  ### Setting up the name of the database 
+  db_name = "rag_db"
+  username = "rag_admin" ## Username for the database 
+  manage_master_user_password = true ## This stores the password for the database created 
 
 }
