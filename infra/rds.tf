@@ -25,8 +25,15 @@ resource "aws_db_instance" "pg" {
 
   ## Additional security and what happens when the RDS is deleted 
   backup_retention_period = 1 ## If exceeding then 1 day the backup will be erased 
-  skip_final_snapshot = true ## Not having the final screen shot of the rds instance looks like 
-  deletion_protection = false ## Allowing the instance to be deleted
+  skip_final_snapshot = true ##  Do not create a final database backup when deleting the instance
+  deletion_protection = false ## Allowing the instance to be deleted, if it were set to "true" then aws will prevent deletion from the terraform or cli marking it as accidential 
 
 
+  ### The above deleteion process is set up in a way to save expensees, the industry standard is exactly opposite !
+}
+
+### Outputs after the terraform instance is created 
+
+output "rds_endpoint" {
+  value = aws_db_instance.pg.address ## This returns the database's hostname, the application uses this address toknow which databse server to connect to 
 }
