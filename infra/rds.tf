@@ -37,3 +37,7 @@ resource "aws_db_instance" "pg" {
 output "rds_endpoint" {
   value = aws_db_instance.pg.address ## This returns the database's hostname, the application uses this address toknow which databse server to connect to 
 }
+
+output "rds_secret_arn" {
+  value = aws_db_instance.pg.master_user_secret[0].secret_arn 
+} ## Gives the secret arn code !
