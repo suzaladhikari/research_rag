@@ -81,3 +81,9 @@ resource "aws_route_table" "private" {
   
 }
 
+## Applying the route table instructino to both subnets 
+resource "aws_route_table_association" "public" {
+  count = 2
+  subnet_id = aws_subnet.private[count.index].id
+  route_table_id = aws_route_table.private.id
+}
