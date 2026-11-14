@@ -74,7 +74,7 @@ resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id ## Belongs to tht main vpc 
 
   ## Setting up the route 
-  route = {
+  route {
     cidr_block = "0.0.0.0/0" ## All the internet ips
     nat_gateway_id = aws_nat_gateway.main.id  ## here when the priavete subnet calls for any request it goes ton at gateway where nat gateway places the request in the internet gateway to get the information 
   }
@@ -82,7 +82,7 @@ resource "aws_route_table" "private" {
 }
 
 ## Applying the route table instructino to both subnets 
-resource "aws_route_table_association" "public" {
+resource "aws_route_table_association" "private" {
   count = 2
   subnet_id = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.private.id
