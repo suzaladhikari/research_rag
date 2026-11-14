@@ -72,6 +72,12 @@ resource "aws_nat_gateway" "main" {
 ## Creating the route table for the NAT Gateway 
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id ## Belongs to tht main vpc 
-  
+
+  ## Setting up the route 
+  route = {
+    cidr_block = "0.0.0.0/0" ## All the internet ips
+    nat_gateway_id = aws_nat_gateway.main.id  ## here when the priavete subnet calls for any request it goes ton at gateway where nat gateway places the request in the internet gateway to get the information 
+  }
   
 }
+
