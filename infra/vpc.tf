@@ -64,5 +64,6 @@ resource "aws_eip" "nat" {
 
 ## Creating the nat gatway 
 resource "aws_nat_gateway" "main" {
-  allocation_id = aws_eip.nat.id
+  allocation_id = aws_eip.nat.id ### uses this id to get the information 
+  subnet_id = aws_subnet.public[0].id ## NAT gateway is places in the internet gateway to reach to get the information via the public subnet 
 }
