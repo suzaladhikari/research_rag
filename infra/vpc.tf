@@ -58,8 +58,11 @@ resource "aws_route_table_association" "public" {
 
 
 ### The main difference between private and public subnet is the route tables.
+resource "aws_eip" "nat" {
+  domain = "vpc" ## This preserves address which provides internet serivces an address to send replies back to !
+}
 
 ## Creating the nat gatway 
-resource "aws_nat_gateway" "private" {
-  
+resource "aws_nat_gateway" "main" {
+  allocation_id = aws_eip.nat.id
 }
