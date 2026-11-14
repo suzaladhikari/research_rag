@@ -68,3 +68,10 @@ resource "aws_nat_gateway" "main" {
   subnet_id = aws_subnet.public[0].id ## NAT gateway is places in the internet gateway to reach to get the information via the public subnet 
   depends_on = [ aws_internet_gateway.main ] ## Here depends on means to run that nat gateway internet gateway must have been created 
 }
+
+## Creating the route table for the NAT Gateway 
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.main.id ## Belongs to tht main vpc 
+  
+  
+}
