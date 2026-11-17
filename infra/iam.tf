@@ -24,7 +24,7 @@ resource "aws_iam_role_policy" "api_permissions" {
         {
             Effect = "Allow"
             Action = "s3:PutObject"
-            Resource = 
+            Resource = "${aws_s3_bucket.uploads.arn}"
         }
     ]
   })
