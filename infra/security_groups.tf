@@ -22,7 +22,7 @@ resource "aws_security_group" "alb" {
 resource "aws_security_group" "ui" {
   name = "research-rag-ui" ## This will be the name of the rag's security group
   vpc_id = aws_vpc.main.id
-  description = "This handles the user's request and does all the frontend tasks"
+  description = "This handles the users request and does all the frontend tasks"
   ingress {
     from_port = 8501
     to_port = 8501
