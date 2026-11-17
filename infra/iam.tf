@@ -16,5 +16,16 @@ resource "aws_iam_role" "api_task" { ## If this is accessed or used in the task 
 
 ## Adding permissions to the role 
 resource "aws_iam_role_policy" "api_permissions" {
-  
+  name = "research-rag-api-permissions"
+  role = aws_iam_role.api_task.id ## Attaching to the API role 
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+        {
+            Effect = "Allow"
+            Action = "s3:PutObject"
+            Resource = 
+        }
+    ]
+  })
 }
