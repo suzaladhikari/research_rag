@@ -28,8 +28,8 @@ resource "aws_iam_role_policy" "api_permissions" {
         },
         {
             Effect = "Allow"
-            Action = "sqs:SendMessage"
-            Resource = "${aws_sqs_queue.retrieve.arn}"
+            Action = "sqs:*"
+            Resource = [aws_sqs_queue.retrieve.arn] ## This gives permission to delete message and add message 
         }
 
     ]
