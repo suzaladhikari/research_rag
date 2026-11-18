@@ -16,8 +16,8 @@ resource "aws_iam_role" "app_task" { ## If this is accessed or used in the task 
 
 ## Adding permissions to the role 
 resource "aws_iam_role_policy" "app_permissions" {
-  name = "research-rag-api-permissions"
-  role = aws_iam_role.app_task.id ## Attaching to the API role 
+  name = "research-rag-app-permissions"
+  role = aws_iam_role.app_task.id  
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
