@@ -6,7 +6,7 @@ resource "aws_iam_role" "api_task" { ## If this is accessed or used in the task 
             {
                 Effect = "Allow"  
                 Principal = {
-                    Service = "ecs_tasks.amazonaws.com"  ## Who is allowed to use this role 
+                    Service = "ecs-tasks.amazonaws.com"  ## Who is allowed to use this role 
                 }
             Action = "sts:AssumeRole"
             }
@@ -29,9 +29,15 @@ resource "aws_iam_role_policy" "api_permissions" {
         {
             Effect = "Allow"
             Action = "sqs:*"
-            Resource = [aws_sqs_queue.retrieve.arn] ## This gives permission to delete message and add message 
+            Resource = aws_sqs_queue.retrieve.arn ## This gives permission to delete message and add message 
         }
 
     ]
   })
+}
+
+
+### Creating IAM role for the worker task ask well 
+resource "aws_iam_role" "worker_task" {
+  
 }
