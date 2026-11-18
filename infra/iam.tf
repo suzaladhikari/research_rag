@@ -1,5 +1,5 @@
-resource "aws_iam_role" "api_task" { ## If this is accessed or used in the task defination then following permission is granted 
-    name = "research-rag-api-task"
+resource "aws_iam_role" "app_task" { ## If this is accessed or used in the task defination then following permission is granted 
+    name = "research-rag-app-permissions"
     assume_role_policy = jsonencode({
         Version = "2012-10-17"
         Statement = [
@@ -15,9 +15,9 @@ resource "aws_iam_role" "api_task" { ## If this is accessed or used in the task 
 }
 
 ## Adding permissions to the role 
-resource "aws_iam_role_policy" "api_permissions" {
+resource "aws_iam_role_policy" "app_permissions" {
   name = "research-rag-api-permissions"
-  role = aws_iam_role.api_task.id ## Attaching to the API role 
+  role = aws_iam_role.app_task.id ## Attaching to the API role 
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -37,7 +37,3 @@ resource "aws_iam_role_policy" "api_permissions" {
 }
 
 
-### Creating IAM role for the worker task ask well 
-resource "aws_iam_role" "worker_task" {
-  
-}
