@@ -23,8 +23,8 @@ resource "aws_iam_role_policy" "api_permissions" {
     Statement = [
         {
             Effect = "Allow"
-            Action = "s3:PutObject"
-            Resource = "${aws_s3_bucket.uploads.arn}"
+            Action = "s3:*" ## This is the way of allowing what needs to be happened
+            Resource = [aws_s3_bucket.uploads.arn, "${aws_s3_bucket.uploads.arn}/*"] ## This gives permissoin to list the bucket, delete the bucket and upload and delete the file insisde the bucket as well 
         },
         {
             Effect = "Allow"
