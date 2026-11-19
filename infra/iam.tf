@@ -38,6 +38,16 @@ resource "aws_iam_role_policy" "app_permissions" {
 
 ## Creating the execution permission for ECS- meaning ECS uses it to download the ECR in the private repository 
 resource "aws_iam_role" "ecs_execution" {
-  
+  name = "research-rag-ecs-execution"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+        Effect = "Allow"
+        Principal = {
+            Service = "ecs-task.amazonaws.com"
+    
+        }
+    }]
+  })
 }
 
