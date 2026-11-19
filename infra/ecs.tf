@@ -10,7 +10,8 @@ resource "aws_ecs_task_definition" "api" { ## Setting up the task definition for
     execution_role_arn =  aws_iam_role.ecs_execution.arn  
     task_role_arn = aws_iam_role.app_task.arn 
     container_definitions = jsonencode({
-        name = ""
+        name = "api-conatiner" ## Name of the contianer after the container is created from ECS 
+        image = "${aws_ecr_repository.services["api"].repository_url}:latest" ## This is the image that will run 
     })
 
 }
