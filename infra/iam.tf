@@ -45,8 +45,8 @@ resource "aws_iam_role" "ecs_execution" {
         Effect = "Allow"
         Principal = {
             Service = "ecs-task.amazonaws.com"
-    
         }
+        Action = "sts:AssumeRole"
     }]
   })
 }
