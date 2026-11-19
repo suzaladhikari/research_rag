@@ -7,8 +7,8 @@ resource "aws_ecs_task_definition" "api" { ## Setting up the task definition for
     cpu = "256"  ## 0.25 vCPU 
     memory = "512" ## 512 MiB 
 
-    execution_role_arn = aws_iam_role.ecs_execution.arn 
-    task_role_arn = aws_iam_role.api_task.arn 
+    execution_role_arn =  aws_iam_role.ecs_execution.arn  
+    task_role_arn = aws_iam_role.app_task.arn 
 
 
 }
