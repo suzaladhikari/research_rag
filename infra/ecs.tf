@@ -1,4 +1,4 @@
-### Starting to write the ecs code   
+### Task definition is all about the settings for ecs to run the ecr images
 resource "aws_ecs_task_definition" "api" { ## Setting up the task definition for the api 
     family = "research-rag-api" ## Name of the task 
     network_mode = "awsvpc" ## Gives tasks its own ip address and network interface 
@@ -9,6 +9,8 @@ resource "aws_ecs_task_definition" "api" { ## Setting up the task definition for
 
     execution_role_arn =  aws_iam_role.ecs_execution.arn  
     task_role_arn = aws_iam_role.app_task.arn 
-
+    container_definitions = jsonencode({
+        name = ""
+    })
 
 }
