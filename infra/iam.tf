@@ -44,10 +44,15 @@ resource "aws_iam_role" "ecs_execution" {
     Statement = [{
         Effect = "Allow"
         Principal = {
-            Service = "ecs-task.amazonaws.com"
+            Service = "ecs-task.amazonaws.com" ## Who is allowed to use this role - ECS
         }
         Action = "sts:AssumeRole"
     }]
   })
 }
+## What does the IAM role do actually ?
+resource "aws_iam_role_attachment" "ecs_execution" { ## What kind of permission does ECS gets
+    role = aws_iam_role.ecs_execution.id
+    policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+} ## We used aws_iam_role_attachment because the ecs execution already exists 
 
