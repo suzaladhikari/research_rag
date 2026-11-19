@@ -36,4 +36,8 @@ resource "aws_iam_role_policy" "app_permissions" {
   })
 }
 
+## Creating the execution permission for ECS- meaning ECS uses it to download the ECR in the private repository 
+resource "aws_iam_role" "ecs_execution" {
+  
+}
 
